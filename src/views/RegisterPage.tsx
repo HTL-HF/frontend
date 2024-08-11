@@ -20,7 +20,7 @@ const RegisterPage = () => {
         email,
         password
       );
-      
+
       if (response) {
         navigator("/");
       }
