@@ -2,9 +2,9 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import ShareIcon from "@mui/icons-material/Share";
 import { Menu, MenuItem } from "@mui/material";
 interface FormItemProps {
-  form: { id: number; name: string };
+  form: { id: string; filename: string };
   anchorEl: HTMLElement | null;
-  selectedFormId: number | null;
+  selectedFormId: string | null;
   onClose: () => void;
   onDelete: () => void;
   onShare: () => void;

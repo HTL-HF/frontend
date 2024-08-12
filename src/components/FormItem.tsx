@@ -5,10 +5,10 @@ import React from "react";
 import FormMenu from "./FormMenu";
 
 interface FormItemProps {
-  form: { id: number; name: string };
-  onMenuClick: (event: React.MouseEvent<HTMLElement>, formId: number) => void;
+  form: { id: string; filename: string };
+  onMenuClick: (event: React.MouseEvent<HTMLElement>, formId: string) => void;
   anchorEl: HTMLElement | null;
-  selectedFormId: number | null;
+  selectedFormId: string | null;
   onClose: () => void;
   onDelete: () => void;
   onShare: () => void;
@@ -35,7 +35,7 @@ const FormItem: React.FC<FormItemProps> = ({
       style={{ height: "150px", textAlign: "center" }}
     >
       <Typography variant="h6" noWrap>
-        {form.name}
+        {form.filename}
       </Typography>
 
       <IconButton

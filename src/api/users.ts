@@ -3,11 +3,11 @@ import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 import User from "../types/user";
 
-const axiosInstance = axios.create({
-  baseURL: import.meta.env.BACKEND_BASE_URL || "http://localhost:3000",
+const server = axios.create({
+  baseURL: (import.meta.env.BACKEND_BASE_URL || "http://localhost:3000") + "/users",
 });
 
-const users = {
+const usersApi = {
   async register(
     firstName: string,
     lastName: string,
@@ -16,7 +16,7 @@ const users = {
     password: string
   ) {
     try {
-      const response = await axiosInstance.post("/register", {
+      const response = await server.post("/register", {
         firstName,
         lastName,
         username,
@@ -35,6 +35,19 @@ const users = {
       }
     }
   },
+  async forms() {
+    try {
+      return (
+        await server.get<{ id: string; filename: string }[]>("forms", {
+          headers: { Authorization: localStorage.getItem("token") },
+        })
+      ).data;
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        toast(err.message, { type: "error" });
+      }
+    }
+  },
 };
 
-export default users;
+export default usersApi;

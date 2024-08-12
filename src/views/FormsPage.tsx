@@ -1,22 +1,26 @@
 import { Container, Typography, Grid } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormItem from "../components/FormItem";
-
-const formsData = [
-  { id: 1, name: "Form 1" },
-  { id: 2, name: "Form 2" },
-  { id: 3, name: "Form 3" },
-  { id: 4, name: "Form 4" },
-];
+import usersApi from "../api/users";
+import formsApi from "../api/forms";
+import { toast } from "react-toastify";
 
 const FormPage = () => {
-  const [forms, setForms] = useState(formsData);
+  const [forms, setForms] = useState<{ id: string; filename: string }[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedFormId, setSelectedFormId] = useState<number | null>(null);
+  const [selectedFormId, setSelectedFormId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getForms = async () => {
+      const forms = await usersApi.forms();
+      if (forms) setForms(forms);
+    };
+    getForms();
+  }, []);
 
   const handleMenuClick = (
     event: React.MouseEvent<HTMLElement>,
-    formId: number
+    formId: string
   ) => {
     setAnchorEl(event.currentTarget);
     setSelectedFormId(formId);
@@ -28,14 +32,23 @@ const FormPage = () => {
   };
 
   const handleDelete = () => {
-    if (selectedFormId !== null) {
-      setForms(forms.filter((form) => form.id !== selectedFormId));
-      handleClose();
-    }
+    const deleteFromServerHandler = async () => {
+      if (selectedFormId !== null) {
+        setForms(forms.filter((form) => form.id !== selectedFormId));
+        await formsApi.deleteForm(selectedFormId);
+        handleClose();
+      }
+    };
+    deleteFromServerHandler();
   };
 
   const handleShare = () => {
-    alert("Share feature not implemented yet!");
+    navigator.clipboard.writeText(
+      `{window.location.origin}/forms/${selectedFormId}`
+    );
+
+    toast("copied link to your clipboard", { type: "success" });
+
     handleClose();
   };
 

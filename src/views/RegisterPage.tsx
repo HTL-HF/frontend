@@ -7,7 +7,7 @@ import {
   InputLabel,
   Input,
 } from "@mui/material";
-import users from "../api/users";
+import usersApi from "../api/users";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -60,7 +60,7 @@ const RegisterPage = () => {
 
   const register = () => {
     const handleRegister = async () => {
-      const response = await users.register(
+      const response = await usersApi.register(
         firstName,
         lastName,
         username,
