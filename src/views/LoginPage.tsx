@@ -1,22 +1,26 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { Container, TextField, Button, Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { users } from "../utils/axios";
 import { SHA512 } from "../utils/encryption";
+import users from "../api/users";
+import { useDispatch } from "react-redux";
+import { changeUser } from "../types/actions";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigator = useNavigate();
+  const dispatch = useDispatch();
+
   const handleLogin = () => {
     const login = async () => {
       const response = await users.login(username, SHA512(password));
 
       if (response) {
+        dispatch(changeUser(response.user));
+        localStorage.setItem("token", response.token);
         navigator("/forms");
       }
-
-      ///set user at redux
     };
 
     login();
