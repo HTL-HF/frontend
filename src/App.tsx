@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { changeUser } from "./types/actions";
 import { jwtDecode } from "jwt-decode";
 import User from "./types/user";
+import HomePage from "./views/HomePage";
 function App() {
   const dispatch = useDispatch();
 
@@ -20,6 +21,7 @@ function App() {
   return (
     <>
       <Routes>
+        <Route path="/" element={<HomePage />} />
         <Route path="/register" element={<RegisterPage />} />
       </Routes>
 
