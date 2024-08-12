@@ -8,4 +8,9 @@ export interface ChangeUserAction extends UnknownAction {
   payload: User | null;
 }
 
+export const changeUser = (user: User | null): ChangeUserAction => ({
+  type: CHANGE_USER,
+  payload: user,
+});
+
 export type AppActions = ChangeUserAction;

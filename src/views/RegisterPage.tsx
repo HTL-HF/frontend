@@ -10,6 +10,8 @@ import {
 import users from "../api/users";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { changeUser } from "../types/actions";
 
 interface RegisterType {
   label: string;
@@ -25,6 +27,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const registerFields: RegisterType[] = [
     {
@@ -65,6 +68,8 @@ const RegisterPage = () => {
       );
 
       if (response) {
+        dispatch(changeUser(response.user));
+        localStorage.setItem("token", response.token);
         navigate("/");
       }
     };
