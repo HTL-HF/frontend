@@ -7,6 +7,7 @@ import { changeUser } from "./types/actions";
 import { jwtDecode } from "jwt-decode";
 import User from "./types/user";
 import HomePage from "./views/HomePage";
+import FormPage from "./views/FormsPage";
 function App() {
   const dispatch = useDispatch();
 
@@ -23,6 +24,8 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/forms" element={<FormPage />} />
+
       </Routes>
 
       <ToastContainer />
