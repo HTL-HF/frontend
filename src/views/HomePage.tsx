@@ -27,9 +27,9 @@ const HomePage = () => {
           size="large"
           style={{ width: "150px" }}
           component={Link}
-          to="/signup"
+          to="/register"
         >
-          Sign Up
+          Register
         </Button>
       </Box>
     </Container>
