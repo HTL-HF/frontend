@@ -1,7 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
-import User from "../types/user";
 
 const server = axios.create({
   baseURL:
