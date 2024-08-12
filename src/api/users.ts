@@ -5,7 +5,7 @@ const axiosInstance = axios.create({
   baseURL: import.meta.env.BACKEND_BASE_URL || "http://localhost:3000",
 });
 
-export const users = {
+const users = {
   async register(
     firstName: string,
     lastName: string,
@@ -28,3 +28,5 @@ export const users = {
     }
   },
 };
+
+export default users;
