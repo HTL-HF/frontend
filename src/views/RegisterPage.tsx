@@ -12,6 +12,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { changeUser } from "../types/actions";
+import { SHA512 } from "../utils/encryption";
 
 interface RegisterType {
   label: string;
@@ -64,7 +65,7 @@ const RegisterPage = () => {
         lastName,
         username,
         email,
-        password
+        SHA512(password)
       );
 
       if (response) {
