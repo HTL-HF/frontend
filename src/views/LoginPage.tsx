@@ -1,5 +1,5 @@
-import  { useState } from "react";
-import { Container, TextField, Button, Box, Typography } from "@mui/material";
+import { useState } from "react";
+import { Container, Button, Box, Typography, FormControl, InputLabel, Input } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { SHA512 } from "../utils/encryption";
 import users from "../api/users";
@@ -25,6 +25,7 @@ const LoginPage = () => {
 
     login();
   };
+
   return (
     <Container maxWidth="sm" style={{ marginTop: "50px" }}>
       <Typography variant="h4" component="h1" gutterBottom>
@@ -39,25 +40,28 @@ const LoginPage = () => {
           handleLogin();
         }}
       >
-        <TextField
-          fullWidth
-          label="Username"
-          margin="normal"
-          variant="outlined"
-          onChange={(event) => setUsername(event.target.value)}
-          required
-        />
-        <TextField
-          fullWidth
-          label="Password"
-          margin="normal"
-          variant="outlined"
-          type="password"
-          onChange={(event) => setPassword(event.target.value)}
-          required
-        />
+        <FormControl fullWidth margin="normal" required>
+          <InputLabel htmlFor="username">Username</InputLabel>
+          <Input
+            id="username"
+            type="text"
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
+          />
+        </FormControl>
+
+        <FormControl fullWidth margin="normal" required>
+          <InputLabel htmlFor="password">Password</InputLabel>
+          <Input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+        </FormControl>
+
         <Box mt={3}>
-          <Button fullWidth variant="contained" color="primary" size="large">
+          <Button fullWidth variant="contained" color="primary" size="large" type="submit">
             LOGIN
           </Button>
         </Box>
