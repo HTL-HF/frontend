@@ -1,7 +1,23 @@
-import { Container, TextField, Button, Box, Typography } from "@mui/material";
-import { users } from "../utils/axios";
+import {
+  Container,
+  TextField,
+  Button,
+  Box,
+  Typography,
+  FormControl,
+  InputLabel,
+  Input,
+} from "@mui/material";
+import users from "../api/users";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+interface RegisterType {
+  label: string;
+  value: string;
+  setFunction: React.Dispatch<React.SetStateAction<string>>;
+  type: string;
+}
 
 const RegisterPage = () => {
   const [firstName, setFirstName] = useState("");
@@ -9,7 +25,35 @@ const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigator = useNavigate();
+  const navigate = useNavigate();
+
+  const registerFields: RegisterType[] = [
+    {
+      label: "First name",
+      value: firstName,
+      setFunction: setFirstName,
+      type: "text",
+    },
+    {
+      label: "Last name",
+      value: lastName,
+      setFunction: setLastName,
+      type: "text",
+    },
+    { label: "Email", value: email, setFunction: setEmail, type: "email" },
+    {
+      label: "Username",
+      value: username,
+      setFunction: setUsername,
+      type: "text",
+    },
+    {
+      label: "Password",
+      value: password,
+      setFunction: setPassword,
+      type: "password",
+    },
+  ];
 
   const register = () => {
     const handleRegister = async () => {
@@ -22,7 +66,7 @@ const RegisterPage = () => {
       );
 
       if (response) {
-        navigator("/");
+        navigate("/");
       }
     };
 
@@ -40,57 +84,28 @@ const RegisterPage = () => {
         autoComplete="off"
         onSubmit={(event) => {
           event.preventDefault();
-
           register();
         }}
       >
-        <TextField
-          fullWidth
-          label="First Name"
-          margin="normal"
-          variant="outlined"
-          value={firstName}
-          onChange={(event) => setFirstName(event.target.value)}
-          required
-        />
-        <TextField
-          fullWidth
-          label="Last Name"
-          margin="normal"
-          variant="outlined"
-          value={lastName}
-          onChange={(event) => setLastName(event.target.value)}
-          required
-        />
-        <TextField
-          fullWidth
-          label="Username"
-          margin="normal"
-          variant="outlined"
-          value={username}
-          onChange={(event) => setUsername(event.target.value)}
-          required
-        />
-        <TextField
-          fullWidth
-          label="Email"
-          margin="normal"
-          variant="outlined"
-          type="email"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          required
-        />
-        <TextField
-          fullWidth
-          label="Password"
-          margin="normal"
-          variant="outlined"
-          type="password"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          required
-        />
+        {registerFields.map((field, index) => (
+          <FormControl
+            key={index}
+            fullWidth
+            margin="normal"
+            variant="outlined"
+            required
+          >
+            <InputLabel htmlFor={field.label}>{field.label}</InputLabel>
+            <Input
+              id={field.label}
+              type={field.type}
+              value={field.value}
+              required
+              onChange={(event) => field.setFunction(event.target.value)}
+            />
+          </FormControl>
+        ))}
+
         <Box mt={3}>
           <Button
             fullWidth
