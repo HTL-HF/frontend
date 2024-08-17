@@ -1,26 +1,12 @@
-import {
-    Container,
-    Button,
-    Box,
-    Typography,
-    FormControl,
-    InputLabel,
-    Input,
-} from "@mui/material";
-import users from "../api/users";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SHA512 } from "../utils/encryption";
+import users from "../api/users";
+import { loadUserFromToken } from "../utils/token";
 import { useDispatch } from "react-redux";
 import { changeUser } from "../types/actions";
-import { loadUserFromToken } from "../utils/token";
-
-interface RegisterType {
-    label: string;
-    value: string;
-    setFunction: React.Dispatch<React.SetStateAction<string>>;
-    type: string;
-}
+import FormLayout from "../components/FormLayout";
+import FormField from "../components/FormField";
 
 const RegisterPage = () => {
     const [firstName, setFirstName] = useState("");
@@ -31,7 +17,25 @@ const RegisterPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const registerFields: RegisterType[] = [
+    const register = async () => {
+        if (
+            await users.register(
+                firstName,
+                lastName,
+                username,
+                email,
+                SHA512(password)
+            )
+        ) {
+            const user = loadUserFromToken();
+            if (user) {
+                dispatch(changeUser(user));
+            }
+            navigate("/forms");
+        }
+    };
+
+    const registerFields = [
         {
             label: "First name",
             value: firstName,
@@ -59,80 +63,18 @@ const RegisterPage = () => {
         },
     ];
 
-    const register = () => {
-        const handleRegister = async () => {
-            if (
-                await users.register(
-                    firstName,
-                    lastName,
-                    username,
-                    email,
-                    SHA512(password)
-                )
-            ) {
-                const user = loadUserFromToken();
-                
-                if (user) {
-                    dispatch(changeUser(user));
-                }
-
-                navigate("/forms");
-            }
-        };
-
-        handleRegister();
-    };
-
     return (
-        <Container maxWidth="sm" style={{ marginTop: "50px" }}>
-            <Typography variant="h4" gutterBottom>
-                Register
-            </Typography>
-            <Box
-                component="form"
-                noValidate
-                autoComplete="off"
-                onSubmit={(event) => {
-                    event.preventDefault();
-                    register();
-                }}
-            >
-                {registerFields.map((field, index) => (
-                    <FormControl
-                        key={index}
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        required
-                    >
-                        <InputLabel htmlFor={field.label}>
-                            {field.label}
-                        </InputLabel>
-                        <Input
-                            id={field.label}
-                            type={field.type}
-                            value={field.value}
-                            required
-                            onChange={(event) =>
-                                field.setFunction(event.target.value)
-                            }
-                        />
-                    </FormControl>
-                ))}
-
-                <Box mt={3}>
-                    <Button
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        type="submit"
-                    >
-                        Sign Up
-                    </Button>
-                </Box>
-            </Box>
-        </Container>
+        <FormLayout title="Register" onSubmit={register} buttonText="Sign Up">
+            {registerFields.map((field, index) => (
+                <FormField
+                    key={index}
+                    label={field.label}
+                    value={field.value}
+                    type={field.type}
+                    onChange={field.setFunction}
+                />
+            ))}
+        </FormLayout>
     );
 };
 
