@@ -1,13 +1,8 @@
-import axios, { AxiosError } from "axios";
-import { jwtDecode } from "jwt-decode";
+import { AxiosError } from "axios";
 import { toast } from "react-toastify";
-import User from "../types/user";
-
-const server = axios.create({
-  baseURL: (import.meta.env.BACKEND_BASE_URL || "http://localhost:3000") + "/users",
-});
-
-const usersApi = {
+import {  server } from "../configs/axiosConfig";
+import { StatusCodes } from "http-status-codes";
+const users = {
   async register(
     firstName: string,
     lastName: string,
@@ -16,38 +11,61 @@ const usersApi = {
     password: string
   ) {
     try {
-      const response = await server.post("/register", {
-        firstName,
-        lastName,
-        username,
-        email,
-        password,
-      });
+      await server.post<{ id: string; token: string }>(
+        "/users/register",
+        {
+          firstName,
+          lastName,
+          username,
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
+      
+      return true;
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.code === String(StatusCodes.CONFLICT))
+          toast(err.message, { type: "error" });
+        else {
+          toast("Something wrong with the server, try again later", {
+            type: "error",
+          });
+          console.log(err);
+        }
+      }
+    }
 
-      if (response && response.data.token) {
-        const token = response.data.token;
-        const user = jwtDecode<User>(token);
-        return { token, user };
-      }
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        toast(err.message, { type: "error" });
-      }
-    }
+    return false;
   },
-  async forms() {
+  async login(username: string, password: string) {
     try {
-      return (
-        await server.get<{ id: string; filename: string }[]>("forms", {
-          headers: { Authorization: localStorage.getItem("token") },
-        })
-      ).data;
+      await server.post<{ id: string; token: string }>(
+        "/users/login",
+        {
+          username,
+          password,
+        },
+        { withCredentials: true }
+      );
+
+      return true;
     } catch (err) {
       if (err instanceof AxiosError) {
-        toast(err.message, { type: "error" });
+        if (err.code === String(StatusCodes.NOT_FOUND)) {
+          toast(err.message, { type: "error" });
+        } else {
+          toast("Something wrong with the server, try again later", {
+            type: "error",
+          });
+          console.log(err);
+        }
       }
     }
+
+    return false;
   },
 };
 
-export default usersApi;
+export default users;
