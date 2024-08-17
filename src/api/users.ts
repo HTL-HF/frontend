@@ -1,11 +1,8 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 import User from "../types/user";
-
-const server = axios.create({
-  baseURL: import.meta.env.BACKEND_BASE_URL || "http://localhost:3000",
-});
+import { server } from "../configs/axiosConfig";
 
 const users = {
   async register(
@@ -16,13 +13,17 @@ const users = {
     password: string
   ) {
     try {
-      const response = await server.post("/register", {
-        firstName,
-        lastName,
-        username,
-        email,
-        password,
-      });
+      const response = await server.post(
+        "/register",
+        {
+          firstName,
+          lastName,
+          username,
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
 
       if (response && response.data.token) {
         const token = response.data.token;
@@ -37,10 +38,14 @@ const users = {
   },
   async login(username: string, password: string) {
     try {
-       const response = await server.post("/login", {
-        username,
-        password,
-      });
+      const response = await server.post(
+        "/login",
+        {
+          username,
+          password,
+        },
+        { withCredentials: true }
+      );
 
       if (response && response.data.token) {
         const token = response.data.token;
@@ -48,10 +53,12 @@ const users = {
         return { token, user };
       }
     } catch (err) {
+      console.log(err);
       if (err instanceof AxiosError) {
         toast(err.message, { type: "error" });
       }
     }
+    return false;
   },
 };
 
