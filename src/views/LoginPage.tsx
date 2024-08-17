@@ -1,24 +1,25 @@
 import { useState } from "react";
-import { Container, Button, Box, Typography, FormControl, InputLabel, Input } from "@mui/material";
+import {
+  Container,
+  Button,
+  Box,
+  Typography,
+  FormControl,
+  InputLabel,
+  Input,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { SHA512 } from "../utils/encryption";
 import users from "../api/users";
-import { useDispatch } from "react-redux";
-import { changeUser } from "../types/actions";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigator = useNavigate();
-  const dispatch = useDispatch();
 
   const handleLogin = () => {
     const login = async () => {
-      const response = await users.login(username, SHA512(password));
-
-      if (response) {
-        dispatch(changeUser(response.user));
-        localStorage.setItem("token", response.token);
+      if (await users.login(username, SHA512(password))) {
         navigator("/forms");
       }
     };
@@ -61,7 +62,13 @@ const LoginPage = () => {
         </FormControl>
 
         <Box mt={3}>
-          <Button fullWidth variant="contained" color="primary" size="large" type="submit">
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            size="large"
+            type="submit"
+          >
             LOGIN
           </Button>
         </Box>

@@ -10,8 +10,6 @@ import {
 import users from "../api/users";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { changeUser } from "../types/actions";
 import { SHA512 } from "../utils/encryption";
 
 interface RegisterType {
@@ -28,7 +26,6 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const registerFields: RegisterType[] = [
     {
@@ -60,18 +57,16 @@ const RegisterPage = () => {
 
   const register = () => {
     const handleRegister = async () => {
-      const response = await users.register(
-        firstName,
-        lastName,
-        username,
-        email,
-        SHA512(password)
-      );
-
-      if (response) {
-        dispatch(changeUser(response.user));
-        localStorage.setItem("token", response.token);
-        navigate("/");
+      if (
+        await users.register(
+          firstName,
+          lastName,
+          username,
+          email,
+          SHA512(password)
+        )
+      ) {
+        navigate("/forms");
       }
     };
 

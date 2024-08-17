@@ -1,9 +1,7 @@
 import { AxiosError } from "axios";
-import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
-import User from "../types/user";
-import { server } from "../configs/axiosConfig";
-
+import {  server } from "../configs/axiosConfig";
+import { StatusCodes } from "http-status-codes";
 const users = {
   async register(
     firstName: string,
@@ -13,8 +11,8 @@ const users = {
     password: string
   ) {
     try {
-      const response = await server.post(
-        "/register",
+      await server.post<{ id: string; token: string }>(
+        "/users/register",
         {
           firstName,
           lastName,
@@ -24,22 +22,27 @@ const users = {
         },
         { withCredentials: true }
       );
-
-      if (response && response.data.token) {
-        const token = response.data.token;
-        const user = jwtDecode<User>(token);
-        return { token, user };
-      }
+      
+      return true;
     } catch (err) {
       if (err instanceof AxiosError) {
-        toast(err.message, { type: "error" });
+        if (err.code === String(StatusCodes.CONFLICT))
+          toast(err.message, { type: "error" });
+        else {
+          toast("Something wrong with the server, try again later", {
+            type: "error",
+          });
+          console.log(err);
+        }
       }
     }
+
+    return false;
   },
   async login(username: string, password: string) {
     try {
-      const response = await server.post(
-        "/login",
+      await server.post<{ id: string; token: string }>(
+        "/users/login",
         {
           username,
           password,
@@ -47,17 +50,20 @@ const users = {
         { withCredentials: true }
       );
 
-      if (response && response.data.token) {
-        const token = response.data.token;
-        const user = jwtDecode<User>(token);
-        return { token, user };
-      }
+      return true;
     } catch (err) {
-      console.log(err);
       if (err instanceof AxiosError) {
-        toast(err.message, { type: "error" });
+        if (err.code === String(StatusCodes.NOT_FOUND)) {
+          toast(err.message, { type: "error" });
+        } else {
+          toast("Something wrong with the server, try again later", {
+            type: "error",
+          });
+          console.log(err);
+        }
       }
     }
+
     return false;
   },
 };
