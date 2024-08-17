@@ -1,10 +1,6 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { toast } from "react-toastify";
-
-const server = axios.create({
-  baseURL:
-    (import.meta.env.BACKEND_BASE_URL || "http://localhost:3000") + "/users",
-});
+import { server } from "../configs/axiosConfig";
 
 const formsApi = {
   async deleteForm(id: string) {

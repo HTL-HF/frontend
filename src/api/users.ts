@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
-import {  server } from "../configs/axiosConfig";
+import { server } from "../configs/axiosConfig";
 import { StatusCodes } from "http-status-codes";
 const users = {
   async register(
@@ -22,7 +22,7 @@ const users = {
         },
         { withCredentials: true }
       );
-      
+
       return true;
     } catch (err) {
       if (err instanceof AxiosError) {

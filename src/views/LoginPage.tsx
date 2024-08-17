@@ -9,37 +9,37 @@ import FormLayout from "../components/FormLayout";
 import FormField from "../components/FormField";
 
 const LoginPage = () => {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-    const handleLogin = async () => {
-        if (await users.login(username, SHA512(password))) {
-            const user = loadUserFromToken();
-            if (user) {
-                dispatch(changeUser(user));
-            }
-            navigate("/forms");
-        }
-    };
+  const handleLogin = async () => {
+    if (await users.login(username, SHA512(password))) {
+      const user = loadUserFromToken();
+      if (user) {
+        dispatch(changeUser(user));
+      }
+      navigate("/forms");
+    }
+  };
 
-    return (
-        <FormLayout title="Login" onSubmit={handleLogin} buttonText="Login">
-            <FormField
-                label="Username"
-                value={username}
-                type="text"
-                onChange={setUsername}
-            />
-            <FormField
-                label="Password"
-                value={password}
-                type="password"
-                onChange={setPassword}
-            />
-        </FormLayout>
-    );
+  return (
+    <FormLayout title="Login" onSubmit={handleLogin} buttonText="Login">
+      <FormField
+        label="Username"
+        value={username}
+        type="text"
+        onChange={setUsername}
+      />
+      <FormField
+        label="Password"
+        value={password}
+        type="password"
+        onChange={setPassword}
+      />
+    </FormLayout>
+  );
 };
 
 export default LoginPage;
