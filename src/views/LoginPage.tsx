@@ -28,7 +28,7 @@ const LoginPage = () => {
 
   return (
     <Container maxWidth="sm" style={{ marginTop: "50px" }}>
-      <Typography variant="h4" component="h1" gutterBottom>
+      <Typography variant="h4" gutterBottom>
         Login
       </Typography>
       <Box
