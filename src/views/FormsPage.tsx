@@ -13,7 +13,7 @@ const FormPage = () => {
   useEffect(() => {
     const getForms = async () => {
       const forms = await usersApi.forms();
-      if (forms) setForms(forms);
+      // if (forms) setForms(forms);
     };
     getForms();
   }, []);

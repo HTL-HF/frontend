@@ -66,6 +66,22 @@ const users = {
 
     return false;
   },
+  async forms() {
+    try {
+      await server.get("/users/forms", { withCredentials: true });
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.code === String(StatusCodes.UNAUTHORIZED)) {
+          toast(err.message, { type: "error" });
+        } else {
+          toast("Something wrong with the server, try again later", {
+            type: "error",
+          });
+          console.log(err);
+        }
+      }
+    }
+  },
 };
 
 export default users;
