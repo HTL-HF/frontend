@@ -3,17 +3,18 @@ import React, { useEffect, useState } from "react";
 import FormItem from "../components/FormItem";
 import usersApi from "../api/users";
 import formsApi from "../api/forms";
-import { toast } from "react-toastify";
+import { useNotification } from "../hooks/notifications";
 
 const FormPage = () => {
-  const [forms, setForms] = useState<{ id: string; filename: string }[]>([]);
+  const [forms, setForms] = useState<{ id: string; filename: string }[]>([{id:"1",filename:"abc"}]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedFormId, setSelectedFormId] = useState<string | null>(null);
+  const { showNotification } = useNotification();
 
   useEffect(() => {
     const getForms = async () => {
-      const forms = await usersApi.forms();
-      // if (forms) setForms(forms);
+      const forms = await usersApi.forms(showNotification);
+      if (forms) setForms(forms);
     };
     getForms();
   }, []);
@@ -35,7 +36,7 @@ const FormPage = () => {
     const deleteFromServerHandler = async () => {
       if (selectedFormId !== null) {
         setForms(forms.filter((form) => form.id !== selectedFormId));
-        await formsApi.deleteForm(selectedFormId);
+        await formsApi.deleteForm(selectedFormId,showNotification);
         handleClose();
       }
     };
@@ -44,10 +45,10 @@ const FormPage = () => {
 
   const handleShare = () => {
     navigator.clipboard.writeText(
-      `{window.location.origin}/forms/${selectedFormId}`
+      `${window.location.origin}/forms/${selectedFormId}`
     );
 
-    toast("copied link to your clipboard", { type: "success" });
+    showNotification("copied link to your clipboard", "success");
 
     handleClose();
   };

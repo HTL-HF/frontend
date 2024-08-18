@@ -1,14 +1,18 @@
+// src/api/users.ts
 import { AxiosError } from "axios";
-import { toast } from "react-toastify";
 import { server } from "../configs/axiosConfig";
 import { StatusCodes } from "http-status-codes";
+import { showError } from "../utils/notifications";
+import { AlertColor } from "@mui/material";
+
 const users = {
   async register(
     firstName: string,
     lastName: string,
     username: string,
     email: string,
-    password: string
+    password: string,
+    showNotification: (message: string, severity: AlertColor) => void
   ) {
     try {
       await server.post<{ id: string; token: string }>(
@@ -26,20 +30,17 @@ const users = {
       return true;
     } catch (err) {
       if (err instanceof AxiosError) {
-        if (err.code === String(StatusCodes.CONFLICT))
-          toast(err.message, { type: "error" });
-        else {
-          toast("Something wrong with the server, try again later", {
-            type: "error",
-          });
-          console.log(err);
-        }
+        const statusMap = {
+          [StatusCodes.CONFLICT]: "This email or username is already taken.",
+        };
+        showError(err, statusMap, showNotification);
       }
     }
 
     return false;
   },
-  async login(username: string, password: string) {
+
+  async login(username: string, password: string, showNotification: (message: string, severity: AlertColor) => void) {
     try {
       await server.post<{ id: string; token: string }>(
         "/users/login",
@@ -53,32 +54,25 @@ const users = {
       return true;
     } catch (err) {
       if (err instanceof AxiosError) {
-        if (err.code === String(StatusCodes.NOT_FOUND)) {
-          toast(err.message, { type: "error" });
-        } else {
-          toast("Something wrong with the server, try again later", {
-            type: "error",
-          });
-          console.log(err);
-        }
+        const statusMap = {
+          [StatusCodes.NOT_FOUND]: "Invalid username or password.",
+        };
+        showError(err, statusMap, showNotification);
       }
     }
 
     return false;
   },
-  async forms() {
+
+  async forms(showNotification: (message: string, severity: AlertColor) => void) {
     try {
-      await server.get("/users/forms", { withCredentials: true });
+      return (await server.get("/users/forms", { withCredentials: true })).data;
     } catch (err) {
       if (err instanceof AxiosError) {
-        if (err.code === String(StatusCodes.UNAUTHORIZED)) {
-          toast(err.message, { type: "error" });
-        } else {
-          toast("Something wrong with the server, try again later", {
-            type: "error",
-          });
-          console.log(err);
-        }
+        const statusMap = {
+          [StatusCodes.UNAUTHORIZED]: "You need to log in to access this.",
+        };
+        showError(err, statusMap, showNotification);
       }
     }
   },

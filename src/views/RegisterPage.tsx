@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { changeUser } from "../types/actions";
 import FormLayout from "../components/FormLayout";
 import FormField from "../components/FormField";
+import { useNotification } from "../components/NotificationContext";
 
 const RegisterPage = () => {
   const [firstName, setFirstName] = useState("");
@@ -16,6 +17,7 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { showNotification } = useNotification();
 
   const register = async () => {
     if (
@@ -24,7 +26,8 @@ const RegisterPage = () => {
         lastName,
         username,
         email,
-        SHA512(password)
+        SHA512(password),
+        showNotification
       )
     ) {
       const user = loadUserFromToken();

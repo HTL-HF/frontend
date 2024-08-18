@@ -7,15 +7,16 @@ import { useDispatch } from "react-redux";
 import { changeUser } from "../types/actions";
 import FormLayout from "../components/FormLayout";
 import FormField from "../components/FormField";
+import { useNotification } from "../components/NotificationContext";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const {showNotification} = useNotification();
   const handleLogin = async () => {
-    if (await users.login(username, SHA512(password))) {
+    if (await users.login(username, SHA512(password),showNotification)) {
       const user = loadUserFromToken();
       if (user) {
         dispatch(changeUser(user));

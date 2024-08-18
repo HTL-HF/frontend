@@ -1,19 +1,20 @@
+// src/api/formsApi.ts
 import { AxiosError } from "axios";
-import { toast } from "react-toastify";
 import { server } from "../configs/axiosConfig";
+import { StatusCodes } from "http-status-codes";
+import { showError } from "../utils/notifications";
+import { AlertColor } from "@mui/material";
 
 const formsApi = {
-  async deleteForm(id: string) {
+  async deleteForm(id: string, showNotification: (message: string, severity: AlertColor) => void) {
     try {
-      return (
-        await server.delete("forms", {
-          data: { id },
-          headers: { Authorization: localStorage.getItem("token") },
-        })
-      ).data;
+      return (await server.delete(`/forms/${id}`, { withCredentials: true })).data;
     } catch (err) {
       if (err instanceof AxiosError) {
-        toast(err.message, { type: "error" });
+        const statusMap = {
+          [StatusCodes.UNAUTHORIZED]: "You need to login",
+        };
+        showError(err, statusMap, showNotification);
       }
     }
   },
