@@ -1,71 +1,83 @@
+// src/api/users.ts
 import { AxiosError } from "axios";
-import { toast } from "react-toastify";
-import {  server } from "../configs/axiosConfig";
+import { server } from "../configs/axiosConfig";
 import { StatusCodes } from "http-status-codes";
-const users = {
-  async register(
-    firstName: string,
-    lastName: string,
-    username: string,
-    email: string,
-    password: string
-  ) {
-    try {
-      await server.post<{ id: string; token: string }>(
-        "/users/register",
-        {
-          firstName,
-          lastName,
-          username,
-          email,
-          password,
-        },
-        { withCredentials: true }
-      );
-      
-      return true;
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        if (err.code === String(StatusCodes.CONFLICT))
-          toast(err.message, { type: "error" });
-        else {
-          toast("Something wrong with the server, try again later", {
-            type: "error",
-          });
-          console.log(err);
-        }
-      }
+import { showError } from "../utils/notifications";
+import { AlertColor } from "@mui/material";
+
+export const sendRegister = async (
+  firstName: string,
+  lastName: string,
+  username: string,
+  email: string,
+  password: string,
+  showNotification: (message: string, severity: AlertColor) => void
+) => {
+  try {
+    await server.post<{ id: string; token: string }>(
+      "/users/register",
+      {
+        firstName,
+        lastName,
+        username,
+        email,
+        password,
+      },
+      { withCredentials: true }
+    );
+
+    return true;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      const statusMap = {
+        [StatusCodes.CONFLICT]: "This email or username is already taken.",
+      };
+      showError(err, statusMap, showNotification);
     }
+  }
 
-    return false;
-  },
-  async login(username: string, password: string) {
-    try {
-      await server.post<{ id: string; token: string }>(
-        "/users/login",
-        {
-          username,
-          password,
-        },
-        { withCredentials: true }
-      );
-
-      return true;
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        if (err.code === String(StatusCodes.NOT_FOUND)) {
-          toast(err.message, { type: "error" });
-        } else {
-          toast("Something wrong with the server, try again later", {
-            type: "error",
-          });
-          console.log(err);
-        }
-      }
-    }
-
-    return false;
-  },
+  return false;
 };
 
-export default users;
+export const sendLogin = async (
+  username: string,
+  password: string,
+  showNotification: (message: string, severity: AlertColor) => void
+) => {
+  try {
+    await server.post<{ id: string; token: string }>(
+      "/users/login",
+      {
+        username,
+        password,
+      },
+      { withCredentials: true }
+    );
+
+    return true;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      const statusMap = {
+        [StatusCodes.NOT_FOUND]: "Invalid username or password.",
+      };
+      showError(err, statusMap, showNotification);
+    }
+  }
+
+  return false;
+};
+
+export const sendGetForms = async (
+  showNotification: (message: string, severity: AlertColor) => void
+) => {
+  try {
+    return (await server.get("/users/forms", { withCredentials: true })).data;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      const statusMap = {
+        [StatusCodes.UNAUTHORIZED]: "You need to log in to access this.",
+      };
+      showError(err, statusMap, showNotification);
+    }
+  }
+};

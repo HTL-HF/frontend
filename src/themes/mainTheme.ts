@@ -31,10 +31,14 @@ const theme = createTheme({
       lineHeight: 1.5,
     },
   },
+  shape: {
+    borderRadius: 8,
+  },
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
+          color: "#1976d2",
           borderRadius: 8,
           textTransform: "none",
         },
