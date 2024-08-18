@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SHA512 } from "../utils/encryption";
-import users from "../api/users";
+import { sendLogin } from "../api/users";
 import { loadUserFromToken } from "../utils/token";
 import { useDispatch } from "react-redux";
 import { changeUser } from "../types/actions";
@@ -16,7 +16,7 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const {showNotification} = useNotification();
   const handleLogin = async () => {
-    if (await users.login(username, SHA512(password),showNotification)) {
+    if (await sendLogin(username, SHA512(password),showNotification)) {
       const user = loadUserFromToken();
       if (user) {
         dispatch(changeUser(user));

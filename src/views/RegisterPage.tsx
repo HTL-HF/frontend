@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SHA512 } from "../utils/encryption";
-import users from "../api/users";
 import { loadUserFromToken } from "../utils/token";
 import { useDispatch } from "react-redux";
 import { changeUser } from "../types/actions";
 import FormLayout from "../components/FormLayout";
 import FormField from "../components/FormField";
 import { useNotification } from "../components/NotificationContext";
+import { sendRegister } from "../api/users";
 
 const RegisterPage = () => {
   const [firstName, setFirstName] = useState("");
@@ -21,7 +21,7 @@ const RegisterPage = () => {
 
   const register = async () => {
     if (
-      await users.register(
+      await sendRegister(
         firstName,
         lastName,
         username,

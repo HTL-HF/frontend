@@ -1,9 +1,9 @@
 import { Container, Typography, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import FormItem from "../components/FormItem";
-import usersApi from "../api/users";
-import formsApi from "../api/forms";
 import { useNotification } from "../hooks/notifications";
+import { sendGetForms } from "../api/users";
+import { sendDeleteForm } from "../api/forms";
 
 const FormPage = () => {
   const [forms, setForms] = useState<{ id: string; filename: string }[]>([{id:"1",filename:"abc"}]);
@@ -13,7 +13,7 @@ const FormPage = () => {
 
   useEffect(() => {
     const getForms = async () => {
-      const forms = await usersApi.forms(showNotification);
+      const forms = await sendGetForms(showNotification);
       if (forms) setForms(forms);
     };
     getForms();
@@ -36,7 +36,7 @@ const FormPage = () => {
     const deleteFromServerHandler = async () => {
       if (selectedFormId !== null) {
         setForms(forms.filter((form) => form.id !== selectedFormId));
-        await formsApi.deleteForm(selectedFormId,showNotification);
+        await sendDeleteForm(selectedFormId,showNotification);
         handleClose();
       }
     };
