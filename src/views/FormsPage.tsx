@@ -4,13 +4,15 @@ import FormItem from "../components/FormItem";
 import { useNotification } from "../hooks/notifications";
 import { sendGetForms } from "../api/users";
 import { sendDeleteForm } from "../api/forms";
+import AddButton from "../components/AddButton";
+import { useNavigate } from "react-router-dom";
 
 const FormPage = () => {
   const [forms, setForms] = useState<{ id: string; filename: string }[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedFormId, setSelectedFormId] = useState<string | null>(null);
   const { showNotification } = useNotification();
-
+  const pageNavigator = useNavigate();
   useEffect(() => {
     const getForms = async () => {
       const forms = await sendGetForms(showNotification);
@@ -36,7 +38,7 @@ const FormPage = () => {
     const deleteFromServerHandler = async () => {
       if (selectedFormId !== null) {
         setForms(forms.filter((form) => form.id !== selectedFormId));
-        await sendDeleteForm(selectedFormId,showNotification);
+        await sendDeleteForm(selectedFormId, showNotification);
         handleClose();
       }
     };
@@ -54,26 +56,29 @@ const FormPage = () => {
   };
 
   return (
-    <Container maxWidth="md" style={{ marginTop: "50px" }}>
-      <Typography variant="h4" gutterBottom>
-        My Forms
-      </Typography>
-      <Grid container spacing={2}>
-        {forms.map((form) => (
-          <Grid item xs={12} sm={6} md={4} key={form.id}>
-            <FormItem
-              form={form}
-              onMenuClick={handleMenuClick}
-              anchorEl={anchorEl}
-              selectedFormId={selectedFormId}
-              onClose={handleClose}
-              onDelete={handleDelete}
-              onShare={handleShare}
-            />
-          </Grid>
-        ))}
-      </Grid>
-    </Container>
+    <>
+      <Container maxWidth="md" style={{ marginTop: "50px" }}>
+        <Typography variant="h4" gutterBottom>
+          My Forms
+        </Typography>
+        <Grid container spacing={2}>
+          {forms.map((form) => (
+            <Grid item xs={12} sm={6} md={4} key={form.id}>
+              <FormItem
+                form={form}
+                onMenuClick={handleMenuClick}
+                anchorEl={anchorEl}
+                selectedFormId={selectedFormId}
+                onClose={handleClose}
+                onDelete={handleDelete}
+                onShare={handleShare}
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+      <AddButton onClick={() => pageNavigator("/forms/add")} />
+    </>
   );
 };
 

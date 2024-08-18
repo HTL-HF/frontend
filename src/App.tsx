@@ -26,6 +26,8 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forms" element={<FormPage />} />
+        <Route path="/forms/create" element={<FormPage />} />
+
       </Routes>
 
       <ToastContainer />
