@@ -54,7 +54,7 @@ const FormPage = () => {
 
   return (
     <Container maxWidth="md" style={{ marginTop: "50px" }}>
-      <Typography variant="h4" component="h1" gutterBottom>
+      <Typography variant="h4" gutterBottom>
         My Forms
       </Typography>
       <Grid container spacing={2}>

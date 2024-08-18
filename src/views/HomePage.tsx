@@ -7,7 +7,7 @@ const HomePage = () => {
       maxWidth="sm"
       style={{ textAlign: "center", marginTop: "100px" }}
     >
-      <Typography variant="h1" component="h1" gutterBottom>
+      <Typography variant="h1" gutterBottom>
         Welcome to Atmors
       </Typography>
       <Box mt={4}>
