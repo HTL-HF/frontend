@@ -6,7 +6,7 @@ import { sendGetForms } from "../api/users";
 import { sendDeleteForm } from "../api/forms";
 
 const FormPage = () => {
-  const [forms, setForms] = useState<{ id: string; filename: string }[]>([{id:"1",filename:"abc"}]);
+  const [forms, setForms] = useState<{ id: string; filename: string }[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedFormId, setSelectedFormId] = useState<string | null>(null);
   const { showNotification } = useNotification();
