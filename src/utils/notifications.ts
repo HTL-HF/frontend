@@ -2,19 +2,15 @@ import { StatusCodes } from "http-status-codes";
 import { AxiosError } from "axios";
 import { AlertColor } from "@mui/material";
 
-const convertMapToArray = (
-  statusMap: Partial<Record<StatusCodes, string>>
-): StatusCodes[] => {
-  return Object.keys(statusMap).map((key) => Number(key) as StatusCodes);
-};
-
-const showErrorDefaultMessage = (
+const showErrorCustomMessage = (
   error: AxiosError,
-  possibleStatusCodes: StatusCodes[],
+  statusMap: Partial<Record<StatusCodes, string>>,
   showNotification: (message: string, severity: AlertColor) => void
 ) => {
-  if (error.response && possibleStatusCodes.includes(error.response.status)) {
-    showNotification(error.response.data as string, "error");
+  const statusCode = error.response?.status as StatusCodes;
+  
+  if (statusCode && statusMap[statusCode]) {
+    showNotification(statusMap[statusCode] as string, "error");
   } else {
     showNotification(
       "Something wrong with the server, try again later",
@@ -24,13 +20,17 @@ const showErrorDefaultMessage = (
   }
 };
 
-const showErrorCustomMessage = (
+const showErrorDefaultMessage = (
   error: AxiosError,
-  statusMap: Partial<Record<StatusCodes, string>>,
+  possibleStatusCodes: StatusCodes[],
   showNotification: (message: string, severity: AlertColor) => void
 ) => {
-  const possibleStatusCodes = convertMapToArray(statusMap);
-  showErrorDefaultMessage(error, possibleStatusCodes, showNotification);
+  const statusMap = possibleStatusCodes.reduce((map, code) => {
+    map[code] = error.response?.data as string;
+    return map;
+  }, {} as Partial<Record<StatusCodes, string>>);
+
+  showErrorCustomMessage(error, statusMap, showNotification);
 };
 
 export const showError = (
