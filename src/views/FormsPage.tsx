@@ -17,6 +17,9 @@ const FormPage = () => {
     const getForms = async () => {
       const forms = await sendGetForms(showNotification);
       if (forms) setForms(forms);
+      else if (forms === undefined) {
+        pageNavigator("/login");
+      }
     };
     getForms();
   }, []);

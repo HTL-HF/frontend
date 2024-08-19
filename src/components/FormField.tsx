@@ -6,6 +6,7 @@ interface FormFieldProps {
   value: string;
   onChange: (value: string) => void;
   type: string;
+  required?: boolean;
 }
 
 const FormField: React.FC<FormFieldProps> = ({
@@ -13,6 +14,7 @@ const FormField: React.FC<FormFieldProps> = ({
   value,
   onChange,
   type,
+  required,
 }) => {
   return (
     <FormControl fullWidth margin="normal" variant="outlined" required>
@@ -22,7 +24,7 @@ const FormField: React.FC<FormFieldProps> = ({
         type={type}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        required
+        required={required ? true : false}
       />
     </FormControl>
   );

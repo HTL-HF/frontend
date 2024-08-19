@@ -9,13 +9,13 @@ const StyledFab = styled(Fab)(({ theme }) => ({
   right: theme.spacing(2),
   backgroundColor: theme.palette.primary.main,
   color: theme.palette.common.white,
-  '&:hover': {
+  "&:hover": {
     backgroundColor: theme.palette.primary.dark,
   },
 }));
 
 interface AddButtonProps {
-  onClick: () => void;
+  onClick: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 const AddButton: React.FC<AddButtonProps> = ({ onClick }) => {
