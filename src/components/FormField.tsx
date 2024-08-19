@@ -14,7 +14,7 @@ const FormField: React.FC<FormFieldProps> = ({
   value,
   onChange,
   type,
-  required,
+  required=true,
 }) => {
   return (
     <FormControl fullWidth margin="normal" variant="outlined" required>
