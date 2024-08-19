@@ -9,6 +9,7 @@ import { loadUserFromToken } from "./utils/token";
 import { useDispatch } from "react-redux";
 import { changeUser } from "./types/actions";
 import FormPage from "./views/FormsPage";
+import CreateFormPage from "./views/CreateFromPage";
 function App() {
   const dispatch = useDispatch();
 
@@ -26,7 +27,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forms" element={<FormPage />} />
-        <Route path="/forms/create" element={<FormPage />} />
+        <Route path="/forms/create" element={<CreateFormPage />} />
 
       </Routes>
 

@@ -80,7 +80,7 @@ const FormPage = () => {
           ))}
         </Grid>
       </Container>
-      <AddButton onClick={() => pageNavigator("/forms/add")} />
+      <AddButton onClick={() => pageNavigator("/forms/create")} />
     </>
   );
 };
