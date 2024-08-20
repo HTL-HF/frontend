@@ -3,37 +3,27 @@ import {
   Container,
   TextField,
   Fab,
-  Menu,
-  MenuItem,
-  IconButton,
+  Box,
   Typography,
+  IconButton,
 } from "@mui/material";
+import SaveIcon from "@mui/icons-material/Save";
 import AddIcon from "@mui/icons-material/Add";
-import ShortTextIcon from "@mui/icons-material/ShortText";
-import SubjectIcon from "@mui/icons-material/Subject";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
-import ArrowDropDownCircleIcon from "@mui/icons-material/ArrowDropDownCircle";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import LinearScaleIcon from "@mui/icons-material/LinearScale";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { styled } from "@mui/material/styles";
+import CreateFormMenu from "../components/CreateFormMenu";
 import ShortLongAnswer from "../components/ShortLongAnswer";
 import OptionQuestion from "../components/OptionQuestion";
 import LinearScaleQuestion from "../components/LinearScaleQuestion";
+import { FormModel, QuestionModel } from "../types/form";
 import QuestionBase from "../components/QuestionBase";
 
-const AddButton = styled(Fab)(({ theme }) => ({
-  position: "fixed",
-  bottom: theme.spacing(2),
-  right: theme.spacing(2),
-  backgroundColor: theme.palette.primary.main,
-  color: theme.palette.common.white,
-}));
-
 const CreateFormPage = () => {
-  const [questions, setQuestions] = useState<React.ReactNode[]>([]);
+  const [form, setForm] = useState<FormModel>({
+    filename: "New Form",
+    title: "",
+    description: "",
+    questions: [],
+  });
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleAddButtonClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -44,21 +34,81 @@ const CreateFormPage = () => {
     setAnchorEl(null);
   };
 
-  const addQuestion = (question: React.ReactNode) => {
-    setQuestions([...questions, question]);
-    handleMenuClose();
+  const handleAddQuestion = (viewType: QuestionModel["viewType"]) => {
+    const newQuestion: QuestionModel = {
+      title: "",
+      description: "",
+      required: false,
+      options:
+        viewType === "LINEAR"
+          ? [0, 2]
+          : viewType === "CHECKBOX" ||
+            viewType === "RADIO" ||
+            viewType === "DROPDOWN"
+          ? [""]
+          : undefined,
+      type: viewType === "SHORT" || viewType === "LONG" ? "STRING" : "NUMBER",
+      viewType,
+    };
+    setForm((prev) => ({
+      ...prev,
+      questions: [...prev.questions, newQuestion],
+    }));
+    setAnchorEl(null);
+  };
+
+  const handleQuestionChange = (
+    index: number,
+    updatedQuestion: QuestionModel
+  ) => {
+    const updatedQuestions = [...form.questions];
+    updatedQuestions[index] = updatedQuestion;
+    setForm((prev) => ({ ...prev, questions: updatedQuestions }));
+  };
+
+  const handleQuestionDelete = (index: number) => {
+    const updatedQuestions = [...form.questions];
+    updatedQuestions.splice(index, 1);
+    setForm((prev) => ({ ...prev, questions: updatedQuestions }));
+  };
+
+  const handleSave = () => {
+    if (form.questions.some((q) => q.required && !q.title)) {
+      alert("All required fields must be filled!");
+      return;
+    }
+    console.log("Form Data:", form);
+    // Implement saving logic here
   };
 
   return (
     <Container maxWidth="md" style={{ marginTop: "50px" }}>
-      <TextField
-        label="Title"
-        placeholder="Title"
-        variant="outlined"
-        fullWidth
-        required
-        style={{ marginBottom: "20px" }}
-      />
+      <Fab
+        color="primary"
+        style={{ position: "fixed", top: 38, right: 16 }}
+        onClick={handleSave}
+      >
+        <SaveIcon />
+      </Fab>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={3}
+      >
+        <TextField
+          label="Title"
+          placeholder="Title"
+          variant="outlined"
+          fullWidth
+          required
+          value={form.title}
+          onChange={(e) =>
+            setForm((prev) => ({ ...prev, title: e.target.value }))
+          }
+          style={{ marginBottom: "20px" }}
+        />
+      </Box>
       <TextField
         label="Description"
         placeholder="Description"
@@ -66,118 +116,52 @@ const CreateFormPage = () => {
         fullWidth
         multiline
         rows={2}
+        value={form.description}
+        onChange={(e) =>
+          setForm((prev) => ({ ...prev, description: e.target.value }))
+        }
         style={{ marginBottom: "20px" }}
       />
 
-      {questions.map((question, index) => (
-        <React.Fragment key={index}>{question}</React.Fragment>
-      ))}
+      {form.questions.map((question, index) => {
+        const questionProps = {
+          question,
+          onChange: (updatedQuestion: QuestionModel) =>
+            handleQuestionChange(index, updatedQuestion),
+          onDelete: () => handleQuestionDelete(index),
+        };
 
-      <AddButton aria-label="add" onClick={handleAddButtonClick}>
-        <AddIcon />
-      </AddButton>
+        switch (question.viewType) {
+          case "SHORT":
+          case "LONG":
+            return <ShortLongAnswer key={index} {...questionProps} />;
+          case "CHECKBOX":
+          case "RADIO":
+          case "DROPDOWN":
+            return <OptionQuestion key={index} {...questionProps} />;
+          case "LINEAR":
+            return <LinearScaleQuestion key={index} {...questionProps} />;
+          case "DATE":
+          case "TIME":
+            return <QuestionBase key={index} {...questionProps} />;
+          default:
+            return null;
+        }
+      })}
 
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleMenuClose}
+      <Fab
+        color="primary"
+        style={{ position: "fixed", bottom: 16, right: 16 }}
+        onClick={handleAddButtonClick}
       >
-        <MenuItem
-          onClick={() =>
-            addQuestion(
-              <ShortLongAnswer
-                onDelete={() => {}}
-                onRequiredChange={() => {}}
-                onInputTypeChange={() => {}}
-              />
-            )
-          }
-        >
-          <ShortTextIcon />
-          Short Answer
-        </MenuItem>
-        <MenuItem
-          onClick={() =>
-            addQuestion(
-              <ShortLongAnswer
-                onDelete={() => {}}
-                onRequiredChange={() => {}}
-                onInputTypeChange={() => {}}
-              />
-            )
-          }
-        >
-          <SubjectIcon />
-          Long Answer
-        </MenuItem>
-        <MenuItem
-          onClick={() =>
-            addQuestion(
-              <OptionQuestion onDelete={() => {}} onRequiredChange={() => {}} />
-            )
-          }
-        >
-          <CheckBoxIcon />
-          Multiple Select
-        </MenuItem>
-        <MenuItem
-          onClick={() =>
-            addQuestion(
-              <OptionQuestion onDelete={() => {}} onRequiredChange={() => {}} />
-            )
-          }
-        >
-          <RadioButtonCheckedIcon />
-          Single Select
-        </MenuItem>
-        <MenuItem
-          onClick={() =>
-            addQuestion(
-              <OptionQuestion onDelete={() => {}} onRequiredChange={() => {}} />
-            )
-          }
-        >
-          <ArrowDropDownCircleIcon />
-          Dropdown
-        </MenuItem>
-        <MenuItem
-          onClick={() =>
-            addQuestion(
-              <LinearScaleQuestion
-                onDelete={() => {}}
-                onRequiredChange={() => {}}
-              />
-            )
-          }
-        >
-          <LinearScaleIcon />
-          Linear Scale
-        </MenuItem>
-        <MenuItem
-          onClick={() =>
-            addQuestion(
-              <QuestionBase onDelete={() => {}} onRequiredChange={() => {}}>
-                <Typography>Time Question</Typography>
-              </QuestionBase>
-            )
-          }
-        >
-          <AccessTimeIcon />
-          Time
-        </MenuItem>
-        <MenuItem
-          onClick={() =>
-            addQuestion(
-              <QuestionBase onDelete={() => {}} onRequiredChange={() => {}}>
-                <Typography>Date Question</Typography>
-              </QuestionBase>
-            )
-          }
-        >
-          <CalendarTodayIcon />
-          Date
-        </MenuItem>
-      </Menu>
+        <AddIcon />
+      </Fab>
+
+      <CreateFormMenu
+        anchorEl={anchorEl}
+        onClose={handleMenuClose}
+        onAddQuestion={handleAddQuestion}
+      />
     </Container>
   );
 };

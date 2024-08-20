@@ -1,22 +1,28 @@
 import React from "react";
 import QuestionBase from "./QuestionBase";
-import { Switch, FormControlLabel, Typography } from "@mui/material";
+import { QuestionModel } from "../types/form";
+import { Switch, FormControlLabel } from "@mui/material";
 
-const ShortLongAnswer: React.FC<{
+interface ShortLongAnswerProps {
+  question: QuestionModel;
+  onChange: (updatedQuestion: QuestionModel) => void;
   onDelete: () => void;
-  onRequiredChange: () => void;
-  onInputTypeChange: () => void;
-}> = ({ onDelete, onRequiredChange, onInputTypeChange }) => (
-  <QuestionBase onDelete={onDelete} onRequiredChange={onRequiredChange}>
-    <Switch
-      checked={false}
-      onChange={onInputTypeChange}
-      color="primary"
-      name="numeric-input"
-      inputProps={{ "aria-label": "numeric input switch" }}
-    />
-    <Typography style={{ marginLeft: "10px" }}>Numeric Input</Typography>
-  </QuestionBase>
-);
+}
+
+const ShortLongAnswer: React.FC<ShortLongAnswerProps> = ({ question, onChange, onDelete }) => {
+  const handleTypeChange = () => {
+    onChange({ ...question, type: question.type === "STRING" ? "NUMBER" : "STRING" });
+  };
+
+  return (
+    <QuestionBase question={question} onChange={onChange} onDelete={onDelete}>
+      <FormControlLabel
+        control={<Switch checked={question.type === "NUMBER"} onChange={handleTypeChange} color="primary" />}
+        label="Number Input"
+        style={{ marginLeft: 0, marginBottom: "10px" }}
+      />
+    </QuestionBase>
+  );
+};
 
 export default ShortLongAnswer;

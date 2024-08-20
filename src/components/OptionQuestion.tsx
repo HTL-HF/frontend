@@ -1,30 +1,53 @@
-import React, { useState } from "react";
+import React from "react";
 import QuestionBase from "./QuestionBase";
-import { TextField, IconButton } from "@mui/material";
+import { QuestionModel } from "../types/form";
+import { TextField, IconButton, Box } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 
-const OptionQuestion: React.FC<{
+interface OptionQuestionProps {
+  question: QuestionModel;
+  onChange: (updatedQuestion: QuestionModel) => void;
   onDelete: () => void;
-  onRequiredChange: () => void;
-}> = ({ onDelete, onRequiredChange }) => {
-  const [options, setOptions] = useState<string[]>(["Option 1"]);
+}
+
+const OptionQuestion: React.FC<OptionQuestionProps> = ({ question, onChange, onDelete }) => {
+  const handleOptionChange = (index: number, value: string) => {
+    const updatedOptions = [...(question.options || [])];
+    updatedOptions[index] = value;
+    onChange({ ...question, options: updatedOptions });
+  };
 
   const handleAddOption = () => {
-    setOptions([...options, `Option ${options.length + 1}`]);
+    const updatedOptions = [...(question.options || []), ""];
+    onChange({ ...question, options: updatedOptions });
+  };
+
+  const handleDeleteOption = (index: number) => {
+    const updatedOptions = [...(question.options || [])];
+    updatedOptions.splice(index, 1);
+    onChange({ ...question, options: updatedOptions });
   };
 
   return (
-    <QuestionBase onDelete={onDelete} onRequiredChange={onRequiredChange}>
-      {options.map((option, index) => (
-        <TextField
-          key={index}
-          placeholder={option}
-          variant="outlined"
-          fullWidth
-          style={{ marginBottom: "10px" }}
-        />
+    <QuestionBase question={question} onChange={onChange} onDelete={onDelete}>
+      {(question.options || []).map((option, index) => (
+        <Box key={index} display="flex" alignItems="center" mb={1}>
+          <TextField
+            label={`Option ${index + 1}`}
+            placeholder="Option"
+            variant="outlined"
+            fullWidth
+            value={option}
+            onChange={(e) => handleOptionChange(index, e.target.value)}
+            style={{ marginRight: "10px" }}
+          />
+          <IconButton aria-label="delete" onClick={() => handleDeleteOption(index)}>
+            <DeleteIcon />
+          </IconButton>
+        </Box>
       ))}
-      <IconButton aria-label="add-option" onClick={handleAddOption}>
+      <IconButton aria-label="add" color="primary" onClick={handleAddOption}>
         <AddIcon />
       </IconButton>
     </QuestionBase>
