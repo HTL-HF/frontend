@@ -55,6 +55,14 @@ const theme = createTheme({
         },
       },
     },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          marginBottom: "16px", // Example: applying consistent margin-bottom
+          borderRadius: "8px", // Example: applying consistent border radius
+        },
+      },
+    },
   },
 });
 

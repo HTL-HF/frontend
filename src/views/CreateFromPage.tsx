@@ -103,7 +103,6 @@ const CreateFormPage = () => {
           onChange={(e) =>
             setForm((prev) => ({ ...prev, title: e.target.value }))
           }
-          style={{ marginBottom: "20px" }}
         />
       </Box>
       <TextField
@@ -117,7 +116,6 @@ const CreateFormPage = () => {
         onChange={(e) =>
           setForm((prev) => ({ ...prev, description: e.target.value }))
         }
-        style={{ marginBottom: "20px" }}
       />
 
       {form.questions.map((question, index) => {

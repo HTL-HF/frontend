@@ -44,7 +44,6 @@ const OptionQuestion: React.FC<OptionQuestionProps> = ({
             fullWidth
             value={option}
             onChange={(e) => handleOptionChange(index, e.target.value)}
-            style={{ marginRight: "10px" }}
             required
           />
           {index !== 0 && (

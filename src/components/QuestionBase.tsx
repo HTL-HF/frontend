@@ -56,7 +56,6 @@ const QuestionBase: React.FC<QuestionBaseProps> = ({
         required
         value={question.title}
         onChange={handleTitleChange}
-        style={{ marginBottom: "10px" }}
       />
       <TextField
         label="Description"
@@ -67,7 +66,6 @@ const QuestionBase: React.FC<QuestionBaseProps> = ({
         rows={2}
         value={question.description}
         onChange={handleDescriptionChange}
-        style={{ marginBottom: "10px" }}
       />
       {children}
       <Box display="flex" justifyContent="space-between" alignItems="center">
