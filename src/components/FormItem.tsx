@@ -1,6 +1,9 @@
 import { Box, Typography, IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ShareIcon from "@mui/icons-material/Share";
+
 import React from "react";
 import MenuComponent from "./MenuComponent";
 
@@ -36,8 +39,8 @@ const FormItem: React.FC<FormItemProps> = ({
   onShare,
 }) => {
   const menuItems = [
-    { label: "Delete", icon: <MoreVertIcon />, action: onDelete },
-    { label: "Share", icon: <MoreVertIcon />, action: onShare },
+    { label: "Delete", icon: <DeleteIcon  />, action: onDelete },
+    { label: "Share", icon: <ShareIcon />, action: onShare },
   ];
 
   const open = Boolean(anchorEl && selectedFormId === form.id);
