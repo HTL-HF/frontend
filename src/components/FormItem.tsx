@@ -2,7 +2,7 @@ import { Box, Typography, IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import React from "react";
-import FormMenu from "./FormMenu";
+import MenuComponent from "./MenuComponent";
 
 interface FormItemProps {
   form: { id: string; filename: string };
@@ -35,6 +35,13 @@ const FormItem: React.FC<FormItemProps> = ({
   onDelete,
   onShare,
 }) => {
+  const menuItems = [
+    { label: "Delete", icon: <MoreVertIcon />, action: onDelete },
+    { label: "Share", icon: <MoreVertIcon />, action: onShare },
+  ];
+
+  const open = Boolean(anchorEl && selectedFormId === form.id);
+
   return (
     <FormItemContainer>
       <Typography variant="h6" noWrap>
@@ -47,13 +54,12 @@ const FormItem: React.FC<FormItemProps> = ({
       >
         <MoreVertIcon />
       </IconButton>
-      <FormMenu
-        form={form}
+
+      <MenuComponent
         anchorEl={anchorEl}
-        selectedFormId={selectedFormId}
+        open={open}
         onClose={onClose}
-        onDelete={onDelete}
-        onShare={onShare}
+        menuItems={menuItems}
       />
     </FormItemContainer>
   );

@@ -44,6 +44,17 @@ const theme = createTheme({
         },
       },
     },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          display: "flex",
+          alignItems: "center",
+          "& .MuiSvgIcon-root": {
+            marginRight: 8,
+          },
+        },
+      },
+    },
   },
 });
 
