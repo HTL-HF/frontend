@@ -20,7 +20,7 @@ interface AddButtonProps {
 
 const AddButton: React.FC<AddButtonProps> = ({ onClick }) => {
   return (
-    <StyledFab aria-label="add" onClick={onClick}>
+    <StyledFab onClick={onClick}>
       <AddIcon />
     </StyledFab>
   );
