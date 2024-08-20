@@ -52,7 +52,7 @@ const OptionQuestion: React.FC<OptionQuestionProps> = ({
           )}
         </Box>
       ))}
-      <IconButton aria-label="add" color="primary" onClick={handleAddOption}>
+      <IconButton color="primary" onClick={handleAddOption}>
         <AddIcon />
       </IconButton>
     </QuestionBase>
