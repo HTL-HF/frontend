@@ -8,7 +8,7 @@ import React from "react";
 import MenuComponent from "./MenuComponent";
 
 interface FormItemProps {
-  form: { id: string; filename: string };
+  form: { id: string; title: string };
   onMenuClick: (event: React.MouseEvent<HTMLElement>, formId: string) => void;
   anchorEl: HTMLElement | null;
   selectedFormId: string | null;
@@ -48,7 +48,7 @@ const FormItem: React.FC<FormItemProps> = ({
   return (
     <FormItemContainer>
       <Typography variant="h6" noWrap>
-        {form.filename}
+        {form.title}
       </Typography>
 
       <IconButton

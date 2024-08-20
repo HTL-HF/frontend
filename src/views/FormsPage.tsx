@@ -8,7 +8,7 @@ import AddButton from "../components/buttons/AddButton";
 import { useNavigate } from "react-router-dom";
 
 const FormPage = () => {
-  const [forms, setForms] = useState<{ id: string; filename: string }[]>([]);
+  const [forms, setForms] = useState<{ id: string; title: string }[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedFormId, setSelectedFormId] = useState<string | null>(null);
   const { showNotification } = useNotification();

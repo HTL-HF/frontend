@@ -4,10 +4,14 @@ import CreateFormMenu from "../components/CreateFormMenu";
 import { FormModel, questionComponentMap, QuestionModel } from "../types/form";
 import AddButton from "../components/buttons/AddButton";
 import SaveButton from "../components/buttons/SaveButton";
+import { useNotification } from "../components/NotificationContext";
+import { sendCreateForm } from "../api/forms";
+import { useNavigate } from "react-router-dom";
 
 const CreateFormPage = () => {
+  const { showNotification } = useNotification();
+  const navigator = useNavigate();
   const [form, setForm] = useState<FormModel>({
-    filename: "New Form",
     title: "",
     description: "",
     questions: [],
@@ -62,17 +66,22 @@ const CreateFormPage = () => {
   };
 
   const handleSave = () => {
-    if (
-      !form.title ||
-      form.questions.some(
-        (q) => !q.title || (q.options && q.options.some((option) => !option))
-      )
-    ) {
-      alert("All required fields must be filled!");
-      return;
-    }
-    console.log("Form Data:", form);
-    // Implement saving logic here
+    const save = async () => {
+      if (
+        !form.title ||
+        form.questions.some(
+          (q) => !q.title || (q.options && q.options.some((option) => !option))
+        )
+      ) {
+        showNotification("All required fields must be filled!", "error");
+        return;
+      }
+
+      await sendCreateForm(form, showNotification);
+      navigator("/forms");
+    };
+
+    save();
   };
 
   return (

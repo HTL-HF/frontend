@@ -21,7 +21,6 @@ export interface QuestionModel {
 }
 
 export interface FormModel {
-  filename: string;
   title: string;
   description?: string;
   questions: QuestionModel[];
