@@ -8,7 +8,7 @@ const showErrorCustomMessage = (
   showNotification: (message: string, severity: AlertColor) => void
 ) => {
   const statusCode = error.response?.status as StatusCodes;
-  
+
   if (statusCode && statusMap[statusCode]) {
     showNotification(statusMap[statusCode] as string, "error");
   } else {

@@ -2,11 +2,13 @@ import { useContext } from "react";
 import { NotificationContext } from "../components/NotificationContext";
 
 export const useNotification = () => {
-    const context = useContext(NotificationContext);
-    
-    if (!context) {
-        throw new Error("useNotification must be used within a NotificationProvider");
-    }
+  const context = useContext(NotificationContext);
 
-    return context;
+  if (!context) {
+    throw new Error(
+      "useNotification must be used within a NotificationProvider"
+    );
+  }
+
+  return context;
 };

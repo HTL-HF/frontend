@@ -16,7 +16,11 @@ interface CreateFormMenuProps {
   onAddQuestion: (viewType: QuestionModel["viewType"]) => void;
 }
 
-const CreateFormMenu: React.FC<CreateFormMenuProps> = ({ anchorEl, onClose, onAddQuestion }) => {
+const CreateFormMenu: React.FC<CreateFormMenuProps> = ({
+  anchorEl,
+  onClose,
+  onAddQuestion,
+}) => {
   return (
     <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={onClose}>
       <MenuItem onClick={() => onAddQuestion("SHORT")}>

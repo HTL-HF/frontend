@@ -9,15 +9,28 @@ interface ShortLongAnswerProps {
   onDelete: () => void;
 }
 
-const ShortLongAnswer: React.FC<ShortLongAnswerProps> = ({ question, onChange, onDelete }) => {
+const ShortLongAnswer: React.FC<ShortLongAnswerProps> = ({
+  question,
+  onChange,
+  onDelete,
+}) => {
   const handleTypeChange = () => {
-    onChange({ ...question, type: question.type === "STRING" ? "NUMBER" : "STRING" });
+    onChange({
+      ...question,
+      type: question.type === "STRING" ? "NUMBER" : "STRING",
+    });
   };
 
   return (
     <QuestionBase question={question} onChange={onChange} onDelete={onDelete}>
       <FormControlLabel
-        control={<Switch checked={question.type === "NUMBER"} onChange={handleTypeChange} color="primary" />}
+        control={
+          <Switch
+            checked={question.type === "NUMBER"}
+            onChange={handleTypeChange}
+            color="primary"
+          />
+        }
         label="Number Input"
         style={{ marginLeft: 0, marginBottom: "10px" }}
       />

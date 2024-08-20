@@ -11,7 +11,11 @@ interface OptionQuestionProps {
   onDelete: () => void;
 }
 
-const OptionQuestion: React.FC<OptionQuestionProps> = ({ question, onChange, onDelete }) => {
+const OptionQuestion: React.FC<OptionQuestionProps> = ({
+  question,
+  onChange,
+  onDelete,
+}) => {
   const handleOptionChange = (index: number, value: string) => {
     const updatedOptions = [...(question.options || [])];
     updatedOptions[index] = value;
@@ -42,7 +46,10 @@ const OptionQuestion: React.FC<OptionQuestionProps> = ({ question, onChange, onD
             onChange={(e) => handleOptionChange(index, e.target.value)}
             style={{ marginRight: "10px" }}
           />
-          <IconButton aria-label="delete" onClick={() => handleDeleteOption(index)}>
+          <IconButton
+            aria-label="delete"
+            onClick={() => handleDeleteOption(index)}
+          >
             <DeleteIcon />
           </IconButton>
         </Box>

@@ -14,9 +14,9 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {showNotification} = useNotification();
+  const { showNotification } = useNotification();
   const handleLogin = async () => {
-    if (await sendLogin(username, SHA512(password),showNotification)) {
+    if (await sendLogin(username, SHA512(password), showNotification)) {
       const user = loadUserFromToken();
       if (user) {
         dispatch(changeUser(user));

@@ -1,7 +1,13 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import QuestionBase from "./QuestionBase";
 import { QuestionModel } from "../types/form";
-import { Box, Select, MenuItem, Typography, SelectChangeEvent } from "@mui/material";
+import {
+  Box,
+  Select,
+  MenuItem,
+  Typography,
+  SelectChangeEvent,
+} from "@mui/material";
 
 interface LinearScaleQuestionProps {
   question: QuestionModel;
@@ -9,7 +15,11 @@ interface LinearScaleQuestionProps {
   onDelete: () => void;
 }
 
-const LinearScaleQuestion: React.FC<LinearScaleQuestionProps> = ({ question, onChange, onDelete }) => {
+const LinearScaleQuestion: React.FC<LinearScaleQuestionProps> = ({
+  question,
+  onChange,
+  onDelete,
+}) => {
   const handleMinChange = (event: SelectChangeEvent) => {
     const updatedOptions = [Number(event.target.value), question.options![1]];
     onChange({ ...question, options: updatedOptions });
@@ -24,15 +34,23 @@ const LinearScaleQuestion: React.FC<LinearScaleQuestionProps> = ({ question, onC
     <QuestionBase question={question} onChange={onChange} onDelete={onDelete}>
       <Box display="flex" alignItems="center" mb={1}>
         <Typography>Scale from</Typography>
-        <Select value={String(question.options![0])} onChange={handleMinChange} style={{ margin: "0 10px" }}>
-          {Array.from([0,1]).map((option) => (
+        <Select
+          value={String(question.options![0])}
+          onChange={handleMinChange}
+          style={{ margin: "0 10px" }}
+        >
+          {Array.from([0, 1]).map((option) => (
             <MenuItem key={option} value={option}>
               {option}
             </MenuItem>
           ))}
         </Select>
         <Typography>to</Typography>
-        <Select value={String(question.options![1])} onChange={handleMaxChange} style={{ margin: "0 10px" }}>
+        <Select
+          value={String(question.options![1])}
+          onChange={handleMaxChange}
+          style={{ margin: "0 10px" }}
+        >
           {Array.from({ length: 9 }, (_, i) => i + 2).map((option) => (
             <MenuItem key={option} value={option}>
               {option}

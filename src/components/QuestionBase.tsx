@@ -1,5 +1,12 @@
 import React, { ReactNode } from "react";
-import { TextField, Switch, IconButton, Box, Typography, FormControlLabel } from "@mui/material";
+import {
+  TextField,
+  Switch,
+  IconButton,
+  Box,
+  Typography,
+  FormControlLabel,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { styled } from "@mui/material/styles";
 import { QuestionModel } from "../types/form";
@@ -19,7 +26,12 @@ interface QuestionBaseProps {
   children?: ReactNode;
 }
 
-const QuestionBase: React.FC<QuestionBaseProps> = ({ question, onChange, onDelete, children }) => {
+const QuestionBase: React.FC<QuestionBaseProps> = ({
+  question,
+  onChange,
+  onDelete,
+  children,
+}) => {
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange({ ...question, title: e.target.value });
   };
@@ -61,7 +73,13 @@ const QuestionBase: React.FC<QuestionBaseProps> = ({ question, onChange, onDelet
       {children}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <FormControlLabel
-          control={<Switch checked={question.required} onChange={handleRequiredChange} color="primary" />}
+          control={
+            <Switch
+              checked={question.required}
+              onChange={handleRequiredChange}
+              color="primary"
+            />
+          }
           label="Required"
           style={{ marginLeft: 0 }}
         />
