@@ -1,18 +1,9 @@
 import React, { useState } from "react";
-import {
-  Container,
-  TextField,
-  Fab,
-  Box,
-} from "@mui/material";
-import SaveIcon from "@mui/icons-material/Save";
-import AddIcon from "@mui/icons-material/Add";
+import { Container, TextField, Box } from "@mui/material";
 import CreateFormMenu from "../components/CreateFormMenu";
-import ShortLongAnswer from "../components/ShortLongAnswer";
-import OptionQuestion from "../components/OptionQuestion";
-import LinearScaleQuestion from "../components/LinearScaleQuestion";
-import { FormModel, QuestionModel } from "../types/form";
-import QuestionBase from "../components/QuestionBase";
+import { FormModel, questionComponentMap, QuestionModel } from "../types/form";
+import AddButton from "../components/buttons/AddButton";
+import SaveButton from "../components/buttons/SaveButton";
 
 const CreateFormPage = () => {
   const [form, setForm] = useState<FormModel>({
@@ -71,7 +62,12 @@ const CreateFormPage = () => {
   };
 
   const handleSave = () => {
-    if (form.questions.some((q) => q.required && !q.title)) {
+    if (
+      !form.title ||
+      form.questions.some(
+        (q) => !q.title || (q.options && q.options.some((option) => !option))
+      )
+    ) {
       alert("All required fields must be filled!");
       return;
     }
@@ -81,13 +77,7 @@ const CreateFormPage = () => {
 
   return (
     <Container maxWidth="md" style={{ marginTop: "50px" }}>
-      <Fab
-        color="primary"
-        style={{ position: "fixed", top: 38, right: 16 }}
-        onClick={handleSave}
-      >
-        <SaveIcon />
-      </Fab>
+      <SaveButton onClick={handleSave} />
       <Box
         display="flex"
         justifyContent="space-between"
@@ -122,38 +112,21 @@ const CreateFormPage = () => {
       />
 
       {form.questions.map((question, index) => {
-        const questionProps = {
-          question,
-          onChange: (updatedQuestion: QuestionModel) =>
-            handleQuestionChange(index, updatedQuestion),
-          onDelete: () => handleQuestionDelete(index),
-        };
+        const QuestionComponent = questionComponentMap[question.viewType];
 
-        switch (question.viewType) {
-          case "SHORT":
-          case "LONG":
-            return <ShortLongAnswer key={index} {...questionProps} />;
-          case "CHECKBOX":
-          case "RADIO":
-          case "DROPDOWN":
-            return <OptionQuestion key={index} {...questionProps} />;
-          case "LINEAR":
-            return <LinearScaleQuestion key={index} {...questionProps} />;
-          case "DATE":
-          case "TIME":
-            return <QuestionBase key={index} {...questionProps} />;
-          default:
-            return null;
-        }
+        return (
+          <QuestionComponent
+            key={index}
+            question={question}
+            onChange={(updatedQuestion: QuestionModel) =>
+              handleQuestionChange(index, updatedQuestion)
+            }
+            onDelete={() => handleQuestionDelete(index)}
+          />
+        );
       })}
 
-      <Fab
-        color="primary"
-        style={{ position: "fixed", bottom: 16, right: 16 }}
-        onClick={handleAddButtonClick}
-      >
-        <AddIcon />
-      </Fab>
+      <AddButton onClick={handleAddButtonClick} />
 
       <CreateFormMenu
         anchorEl={anchorEl}

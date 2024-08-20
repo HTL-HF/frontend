@@ -2,8 +2,8 @@ import React from "react";
 import QuestionBase from "./QuestionBase";
 import { QuestionModel } from "../types/form";
 import { TextField, IconButton, Box } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
+import DeleteButton from "./buttons/DeleteButton";
 
 interface OptionQuestionProps {
   question: QuestionModel;
@@ -45,13 +45,11 @@ const OptionQuestion: React.FC<OptionQuestionProps> = ({
             value={option}
             onChange={(e) => handleOptionChange(index, e.target.value)}
             style={{ marginRight: "10px" }}
+            required
           />
-          <IconButton
-            aria-label="delete"
-            onClick={() => handleDeleteOption(index)}
-          >
-            <DeleteIcon />
-          </IconButton>
+          {index !== 0 && (
+            <DeleteButton onClick={() => handleDeleteOption(index)} />
+          )}
         </Box>
       ))}
       <IconButton aria-label="add" color="primary" onClick={handleAddOption}>

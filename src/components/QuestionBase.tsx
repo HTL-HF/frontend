@@ -2,14 +2,13 @@ import React, { ReactNode } from "react";
 import {
   TextField,
   Switch,
-  IconButton,
   Box,
   Typography,
   FormControlLabel,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { styled } from "@mui/material/styles";
 import { QuestionModel } from "../types/form";
+import DeleteButton from "./buttons/DeleteButton";
 
 const QuestionBox = styled(Box)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
@@ -83,9 +82,7 @@ const QuestionBase: React.FC<QuestionBaseProps> = ({
           label="Required"
           style={{ marginLeft: 0 }}
         />
-        <IconButton aria-label="delete" onClick={onDelete}>
-          <DeleteIcon />
-        </IconButton>
+        <DeleteButton onClick={onDelete} />
       </Box>
     </QuestionBox>
   );

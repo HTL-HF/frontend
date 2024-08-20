@@ -20,13 +20,22 @@ const LinearScaleQuestion: React.FC<LinearScaleQuestionProps> = ({
   onChange,
   onDelete,
 }) => {
+  const generateScale = (min: number, max: number) => {
+    const scale = Array.from({ length: max - min + 1 }, (_, i) => i + min);
+    return scale;
+  };
+
   const handleMinChange = (event: SelectChangeEvent) => {
-    const updatedOptions = [Number(event.target.value), question.options![1]];
+    const min = Number(event.target.value);
+    const max = question.options![1];
+    const updatedOptions = generateScale(min, Number(max));
     onChange({ ...question, options: updatedOptions });
   };
 
   const handleMaxChange = (event: SelectChangeEvent) => {
-    const updatedOptions = [question.options![0], Number(event.target.value)];
+    const min = question.options![0];
+    const max = Number(event.target.value);
+    const updatedOptions = generateScale(Number(min), max);
     onChange({ ...question, options: updatedOptions });
   };
 
@@ -47,7 +56,7 @@ const LinearScaleQuestion: React.FC<LinearScaleQuestionProps> = ({
         </Select>
         <Typography>to</Typography>
         <Select
-          value={String(question.options![1])}
+          value={String(question.options![question.options!.length - 1])}
           onChange={handleMaxChange}
           style={{ margin: "0 10px" }}
         >

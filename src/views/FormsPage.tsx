@@ -4,7 +4,7 @@ import FormItem from "../components/FormItem";
 import { useNotification } from "../hooks/notifications";
 import { sendGetForms } from "../api/users";
 import { sendDeleteForm } from "../api/forms";
-import AddButton from "../components/AddButton";
+import AddButton from "../components/buttons/AddButton";
 import { useNavigate } from "react-router-dom";
 
 const FormPage = () => {
