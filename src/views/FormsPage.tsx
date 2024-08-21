@@ -13,6 +13,7 @@ const FormPage = () => {
   const [selectedFormId, setSelectedFormId] = useState<string | null>(null);
   const { showNotification } = useNotification();
   const pageNavigator = useNavigate();
+  
   useEffect(() => {
     const getForms = async () => {
       const forms = await sendGetForms(showNotification);

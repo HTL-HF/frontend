@@ -13,7 +13,6 @@ const CreateFormPage = () => {
   const navigator = useNavigate();
   const [form, setForm] = useState<FormModel>({
     title: "",
-    description: "",
     questions: [],
   });
 
@@ -30,7 +29,6 @@ const CreateFormPage = () => {
   const handleAddQuestion = (viewType: QuestionModel["viewType"]) => {
     const newQuestion: QuestionModel = {
       title: "",
-      description: "",
       required: false,
       options:
         viewType === "LINEAR"
