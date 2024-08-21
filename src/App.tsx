@@ -18,7 +18,7 @@ function App() {
     if (user) {
       dispatch(changeUser(user));
     }
-  }, [dispatch]);
+  }, []);
 
   return (
     <>

@@ -1,13 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SHA512 } from "../utils/encryption";
 import { loadUserFromToken } from "../utils/token";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeUser } from "../types/actions";
 import FormLayout from "../components/FormLayout";
 import FormField from "../components/FormField";
-import { useNotification } from "../components/NotificationContext";
+import { useNotification } from "../hooks/notifications";
 import { sendRegister } from "../api/users";
+import { AppState } from "../store/rootReducer";
 
 const RegisterPage = () => {
   const [firstName, setFirstName] = useState("");
@@ -18,6 +19,14 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { showNotification } = useNotification();
+  const user = useSelector((state: AppState) => state.user);
+
+  useEffect(() => {
+    if (user) {
+      showNotification("you are already logged in", "error");
+      navigate("/");
+    }
+  }, []);
 
   const register = async () => {
     if (
