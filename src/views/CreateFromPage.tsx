@@ -4,7 +4,7 @@ import CreateFormMenu from "../components/CreateFormMenu";
 import { FormModel, questionComponentMap, QuestionModel } from "../types/form";
 import AddButton from "../components/buttons/AddButton";
 import SaveButton from "../components/buttons/SaveButton";
-import { useNotification } from "../components/NotificationContext";
+import { useNotification } from "../hooks/notifications";
 import { sendCreateForm } from "../api/forms";
 import { useNavigate } from "react-router-dom";
 

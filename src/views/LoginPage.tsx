@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { changeUser } from "../types/actions";
 import FormLayout from "../components/FormLayout";
 import FormField from "../components/FormField";
-import { useNotification } from "../components/NotificationContext";
+import { useNotification } from "../hooks/notifications";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
