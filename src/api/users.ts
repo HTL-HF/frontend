@@ -1,4 +1,3 @@
-// src/api/users.ts
 import { AxiosError } from "axios";
 import { server } from "../configs/axiosConfig";
 import { StatusCodes } from "http-status-codes";

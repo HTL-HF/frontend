@@ -1,4 +1,3 @@
-// src/components/NotificationContext.tsx
 import React, { createContext, useState, useContext, ReactNode } from "react";
 import { Snackbar, Alert, AlertColor } from "@mui/material";
 

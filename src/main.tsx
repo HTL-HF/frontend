@@ -1,4 +1,3 @@
-// index.tsx
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
@@ -8,7 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import rootReducer from "./store/rootReducer";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
-import NotificationProvider from "./components/NotificationContext"; // Ensure the correct path
+import NotificationProvider from "./components/NotificationContext";
 import "react-toastify/dist/ReactToastify.css";
 import theme from "./themes/mainTheme";
 
