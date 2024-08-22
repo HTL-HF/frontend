@@ -38,7 +38,7 @@ const CreateFormPage = () => {
             viewType === "DROPDOWN"
           ? [""]
           : undefined,
-      type: "string",
+      type: viewType === "LINEAR" ? "number" : "string",
       viewType,
     };
     setForm((prev) => ({
@@ -65,10 +65,13 @@ const CreateFormPage = () => {
 
   const handleSave = () => {
     const save = async () => {
+      const q = form.questions[0];
       if (
         !form.title ||
         form.questions.some(
-          (q) => !q.title || (q.options && q.options.some((option) => !option))
+          (q) =>
+            !q.title ||
+            (q.options && q.options.some((option) => !option && option !== 0))
         )
       ) {
         showNotification("All required fields must be filled!", "error");
