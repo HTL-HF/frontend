@@ -1,13 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import QuestionBase from "./QuestionBase";
 import { QuestionModel } from "../types/form";
-import {
-  Box,
-  Select,
-  MenuItem,
-  Typography,
-  SelectChangeEvent,
-} from "@mui/material";
+import { Box, Select, MenuItem, Typography } from "@mui/material";
 
 interface LinearScaleQuestionProps {
   question: QuestionModel;
@@ -24,29 +18,25 @@ const LinearScaleQuestion: React.FC<LinearScaleQuestionProps> = ({
     const scale = Array.from({ length: max - min + 1 }, (_, i) => i + min);
     return scale;
   };
+  console.log(question.options);
+  const [min, setMin] = useState<number>(Number(question.options![0]));
+  const [max, setMax] = useState<number>(
+    Number(question.options![question.options!.length - 1])
+  );
 
-  const handleMinChange = (event: SelectChangeEvent) => {
-    const min = Number(event.target.value);
-    const max = question.options![1];
-    const updatedOptions = generateScale(min, Number(max));
-    onChange({ ...question, options: updatedOptions });
-  };
-
-  const handleMaxChange = (event: SelectChangeEvent) => {
-    const min = question.options![0];
-    const max = Number(event.target.value);
-    const updatedOptions = generateScale(Number(min), max);
-    onChange({ ...question, options: updatedOptions });
-  };
+  useEffect(() => {
+    onChange({ ...question, options: generateScale(min, max) });
+  }, [min, max]);
 
   return (
     <QuestionBase question={question} onChange={onChange} onDelete={onDelete}>
       <Box display="flex" alignItems="center" mb={1}>
         <Typography>Scale from</Typography>
         <Select
-          value={String(question.options![0])}
-          onChange={handleMinChange}
+          value={String(min)}
+          onChange={(event) => setMin(Number(event.target.value))}
           style={{ margin: "0 10px" }}
+          required
         >
           {Array.from([0, 1]).map((option) => (
             <MenuItem key={option} value={option}>
@@ -56,9 +46,10 @@ const LinearScaleQuestion: React.FC<LinearScaleQuestionProps> = ({
         </Select>
         <Typography>to</Typography>
         <Select
-          value={String(question.options![question.options!.length - 1])}
-          onChange={handleMaxChange}
+          value={String(max)}
+          onChange={(event) => setMax(Number(event.target.value))}
           style={{ margin: "0 10px" }}
+          required
         >
           {Array.from({ length: 9 }, (_, i) => i + 2).map((option) => (
             <MenuItem key={option} value={option}>
