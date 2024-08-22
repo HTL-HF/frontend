@@ -65,7 +65,6 @@ const CreateFormPage = () => {
 
   const handleSave = () => {
     const save = async () => {
-      const q = form.questions[0];
       if (
         !form.title ||
         form.questions.some(
