@@ -38,7 +38,7 @@ const CreateFormPage = () => {
             viewType === "DROPDOWN"
           ? [""]
           : undefined,
-      type: viewType === "SHORT" || viewType === "LONG" ? "STRING" : "NUMBER",
+      type: "string",
       viewType,
     };
     setForm((prev) => ({
