@@ -17,7 +17,7 @@ const ShortLongAnswer: React.FC<ShortLongAnswerProps> = ({
   const handleTypeChange = () => {
     onChange({
       ...question,
-      type: question.type === "STRING" ? "NUMBER" : "STRING",
+      type: question.type === "string" ? "number" : "string",
     });
   };
 
@@ -26,7 +26,7 @@ const ShortLongAnswer: React.FC<ShortLongAnswerProps> = ({
       <FormControlLabel
         control={
           <Switch
-            checked={question.type === "NUMBER"}
+            checked={question.type === "number"}
             onChange={handleTypeChange}
             color="primary"
           />

@@ -8,7 +8,7 @@ export interface QuestionModel {
   description?: string;
   required: boolean;
   options?: (string | number)[];
-  type: "STRING" | "NUMBER";
+  type: "string" | "number";
   viewType:
     | "SHORT"
     | "LONG"
@@ -26,10 +26,7 @@ export interface FormModel {
   questions: QuestionModel[];
 }
 
-export const questionComponentMap: Record<
-  QuestionModel["viewType"],
-  React.FC<any>
-> = {
+export const questionComponentMap = {
   SHORT: ShortLongAnswer,
   LONG: ShortLongAnswer,
   CHECKBOX: OptionQuestion,
