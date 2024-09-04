@@ -10,8 +10,13 @@ export const sendDeleteForm = async (
   showNotification: (message: string, severity: AlertColor) => void
 ) => {
   try {
-    return (await server.delete(`/forms/${id}`, { withCredentials: true }))
-      .data;
+    const response = (
+      await server.delete(`/forms/${id}`, { withCredentials: true })
+    ).data;
+
+    showNotification("deleted form successfully", "success");
+
+    return response;
   } catch (err) {
     if (err instanceof AxiosError) {
       const statusMap = {
@@ -28,10 +33,15 @@ export const sendCreateForm = async (
 ) => {
   try {
     await server.post("/forms", form, { withCredentials: true });
+    return true;
   } catch (err) {
     if (err instanceof AxiosError) {
-      const statusMap = { [StatusCodes.UNAUTHORIZED]: "You need to login" };
+      const statusMap = {
+        [StatusCodes.UNAUTHORIZED]: "You need to login",
+        [StatusCodes.NOT_ACCEPTABLE]: err.response?.data,
+      };
       showError(err, statusMap, showNotification);
     }
   }
+  return false;
 };
