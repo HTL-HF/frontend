@@ -77,8 +77,9 @@ const CreateFormPage = () => {
         return;
       }
 
-      await sendCreateForm(form, showNotification);
-      navigator("/forms");
+      if (await sendCreateForm(form, showNotification)) {
+        navigator("/forms");
+      }
     };
 
     save();
