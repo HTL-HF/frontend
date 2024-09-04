@@ -3,9 +3,10 @@ import { styled } from "@mui/material/styles";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ShareIcon from "@mui/icons-material/Share";
-
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import React from "react";
 import MenuComponent from "./MenuComponent";
+import { useNavigate } from "react-router-dom";
 
 interface FormItemProps {
   form: { id: string; title: string };
@@ -38,8 +39,16 @@ const FormItem: React.FC<FormItemProps> = ({
   onDelete,
   onShare,
 }) => {
+  const navigator = useNavigate();
   const menuItems = [
-    { label: "Delete", icon: <DeleteIcon  />, action: onDelete },
+    { label: "Delete", icon: <DeleteIcon />, action: onDelete },
+    {
+      label: "Open",
+      icon: <OpenInNewIcon />,
+      action: () => {
+        navigator(`/forms/${form.id}`);
+      },
+    },
     { label: "Share", icon: <ShareIcon />, action: onShare },
   ];
 
