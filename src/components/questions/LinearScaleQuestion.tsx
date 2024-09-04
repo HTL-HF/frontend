@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import QuestionBase from "./QuestionBase";
-import { QuestionModel } from "../types/form";
+import { QuestionModel } from "../../types/form";
 import { Box, Select, MenuItem, Typography } from "@mui/material";
 
 interface LinearScaleQuestionProps {

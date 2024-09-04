@@ -1,6 +1,6 @@
 import React from "react";
 import QuestionBase from "./QuestionBase";
-import { QuestionModel } from "../types/form";
+import { QuestionModel } from "../../types/form";
 import { Switch, FormControlLabel } from "@mui/material";
 
 interface ShortLongAnswerProps {

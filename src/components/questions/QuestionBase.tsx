@@ -7,8 +7,8 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { QuestionModel } from "../types/form";
-import DeleteButton from "./buttons/DeleteButton";
+import { QuestionModel } from "../../types/form";
+import DeleteButton from "../buttons/DeleteButton";
 
 const QuestionBox = styled(Box)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,

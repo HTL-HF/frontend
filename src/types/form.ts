@@ -1,7 +1,7 @@
-import LinearScaleQuestion from "../components/LinearScaleQuestion";
-import OptionQuestion from "../components/OptionQuestion";
-import QuestionBase from "../components/QuestionBase";
-import OpenQuestion from "../components/OpenQuestion";
+import LinearScaleQuestion from "../components/questions/LinearScaleQuestion";
+import OptionQuestion from "../components/questions/OptionQuestion";
+import QuestionBase from "../components/questions/QuestionBase";
+import OpenQuestion from "../components/questions/OpenQuestion";
 
 export interface QuestionModel {
   title: string;

@@ -1,9 +1,9 @@
 import React from "react";
 import QuestionBase from "./QuestionBase";
-import { QuestionModel } from "../types/form";
+import { QuestionModel } from "../../types/form";
 import { TextField, IconButton, Box } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import DeleteButton from "./buttons/DeleteButton";
+import DeleteButton from "../buttons/DeleteButton";
 
 interface OptionQuestionProps {
   question: QuestionModel;
