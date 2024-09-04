@@ -1,7 +1,7 @@
 import LinearScaleQuestion from "../components/LinearScaleQuestion";
 import OptionQuestion from "../components/OptionQuestion";
 import QuestionBase from "../components/QuestionBase";
-import ShortLongAnswer from "../components/ShortLongAnswer";
+import OpenQuestion from "../components/OpenQuestion";
 
 export interface QuestionModel {
   title: string;
@@ -27,8 +27,8 @@ export interface FormModel {
 }
 
 export const questionComponentMap = {
-  SHORT: ShortLongAnswer,
-  LONG: ShortLongAnswer,
+  SHORT: OpenQuestion,
+  LONG: OpenQuestion,
   CHECKBOX: OptionQuestion,
   RADIO: OptionQuestion,
   DROPDOWN: OptionQuestion,

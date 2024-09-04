@@ -9,7 +9,7 @@ interface ShortLongAnswerProps {
   onDelete: () => void;
 }
 
-const ShortLongAnswer: React.FC<ShortLongAnswerProps> = ({
+const OpenQuestion: React.FC<ShortLongAnswerProps> = ({
   question,
   onChange,
   onDelete,
@@ -38,4 +38,4 @@ const ShortLongAnswer: React.FC<ShortLongAnswerProps> = ({
   );
 };
 
-export default ShortLongAnswer;
+export default OpenQuestion;
