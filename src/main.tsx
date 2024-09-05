@@ -10,6 +10,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import NotificationProvider from "./components/NotificationContext";
 import "react-toastify/dist/ReactToastify.css";
 import theme from "./themes/mainTheme";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 
 const store = configureStore({ reducer: rootReducer });
 
@@ -19,9 +21,11 @@ createRoot(document.getElementById("root")!).render(
       <CssBaseline />
       <NotificationProvider>
         <Provider store={store}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
+          <LocalizationProvider dateAdapter={AdapterMoment}>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </LocalizationProvider>
         </Provider>
       </NotificationProvider>
     </ThemeProvider>

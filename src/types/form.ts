@@ -9,6 +9,7 @@ import CheckboxAnswer from "../components/answers/CheckboxAnswer";
 import RadioAnswer from "../components/answers/RadioAnswer";
 import DropdownAnswer from "../components/answers/DropdownAnswer";
 import DateAnswer from "../components/answers/DateAnswer";
+import TimeAnswer from "../components/answers/TimeAnswer";
 
 export interface QuestionModel {
   title: string;
@@ -57,5 +58,5 @@ export const answerComponentMap = {
   DROPDOWN: DropdownAnswer,
   LINEAR: AnswerBase,
   DATE: DateAnswer,
-  TIME: AnswerBase,
+  TIME: TimeAnswer,
 };
