@@ -7,6 +7,8 @@ import ShortAnswer from "../components/answers/ShortAnswer";
 import LongAnswer from "../components/answers/LongAnswer";
 import CheckboxAnswer from "../components/answers/CheckboxAnswer";
 import RadioAnswer from "../components/answers/RadioAnswer";
+import DropdownAnswer from "../components/answers/DropdownAnswer";
+import DateAnswer from "../components/answers/DateAnswer";
 
 export interface QuestionModel {
   title: string;
@@ -52,8 +54,8 @@ export const answerComponentMap = {
   LONG: LongAnswer,
   CHECKBOX: CheckboxAnswer,
   RADIO: RadioAnswer,
-  DROPDOWN: AnswerBase,
+  DROPDOWN: DropdownAnswer,
   LINEAR: AnswerBase,
-  DATE: AnswerBase,
+  DATE: DateAnswer,
   TIME: AnswerBase,
 };
