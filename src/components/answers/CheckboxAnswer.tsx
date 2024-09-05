@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AnswerBase, { AnswerBaseProps } from "./AnswerBase";
 import {
   Checkbox,
@@ -15,9 +15,11 @@ const CheckboxAnswer: React.FC<CheckboxAnswerProps> = ({
   disable,
   onChange,
 }) => {
-  if (!Array.isArray(answer)) {
-    onChange([]);
-  }
+  useEffect(() => {
+    if (!Array.isArray(answer)) {
+      onChange([]);
+    }
+  }, []);
 
   return (
     <AnswerBase

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AnswerBase, { AnswerBaseProps } from "./AnswerBase";
 import { FormControl, MenuItem, Select } from "@mui/material";
 
@@ -10,9 +10,12 @@ const DropdownAnswer: React.FC<DropdownAnswerProps> = ({
   disable,
   onChange,
 }) => {
-  if (!answer && question.options) {
-    onChange(question.options[0]);
-  }
+  useEffect(() => {
+    if (!answer && question.options) {
+      onChange(question.options[0]);
+    }
+  }, []);
+
   return (
     <AnswerBase
       answer={answer}
