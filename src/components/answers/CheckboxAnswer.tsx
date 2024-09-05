@@ -18,6 +18,7 @@ const CheckboxAnswer: React.FC<CheckboxAnswerProps> = ({
   if (!Array.isArray(answer)) {
     onChange([]);
   }
+
   return (
     <AnswerBase
       answer={answer}
@@ -26,11 +27,12 @@ const CheckboxAnswer: React.FC<CheckboxAnswerProps> = ({
       question={question}
     >
       {Array.isArray(answer) && (
-        <FormControl>
+        <FormControl required={question.required}>
           <FormGroup>
             {question.options &&
-              question.options.map((option,index) => (
-                <FormControlLabel key={index}
+              question.options.map((option, index) => (
+                <FormControlLabel
+                  key={index}
                   control={
                     <Checkbox
                       disabled={disable}

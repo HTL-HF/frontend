@@ -19,6 +19,7 @@ const LongAnswer: React.FC<LongAnswerProps> = ({
     >
       <FormControl>
         <TextField
+          required={question.required}
           disabled={disable}
           value={answer}
           multiline

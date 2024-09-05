@@ -21,7 +21,7 @@ export interface AnswerBaseProps {
 const AnswerBase: React.FC<AnswerBaseProps> = ({ question, children }) => {
   return (
     <AnswerBox>
-      <Typography variant="h5">{question.title}</Typography>
+      <Typography variant="h5">{question.title} {question.required?"*":""}</Typography>
       {question.description && (
         <Typography variant="body1" marginTop="16px">
           {question.description}

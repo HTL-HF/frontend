@@ -24,7 +24,7 @@ const RadioAnswer: React.FC<RadioAnswerProps> = ({
       onChange={onChange}
       question={question}
     >
-      <FormControl>
+      <FormControl required={question.required}>
         <RadioGroup
           value={answer}
           onChange={(event) => onChange(event.target.value)}

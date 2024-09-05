@@ -19,6 +19,7 @@ const ShortAnswer: React.FC<AnswerShortProps> = ({
     >
       <FormControl>
         <TextField
+          required={question.required}
           disabled={disable}
           value={answer}
           onChange={(e) => {
