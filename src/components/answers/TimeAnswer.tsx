@@ -1,6 +1,5 @@
 import React from "react";
 import AnswerBase, { AnswerBaseProps } from "./AnswerBase";
-import { FormControl } from "@mui/material";
 import { TimePicker } from "@mui/x-date-pickers";
 import moment from "moment";
 
@@ -19,12 +18,11 @@ const TimeAnswer: React.FC<TimeAnswerProps> = ({
       onChange={onChange}
       question={question}
     >
-      <FormControl required={question.required}>
-        <TimePicker
-          value={answer ? moment(answer, "hh:mm a") : null}
-          onChange={(event) => (event ? onChange(event.format("hh:mm a")) : "")}
-        />
-      </FormControl>
+      <TimePicker
+        value={answer ? moment(answer, "hh:mm a") : null}
+        onChange={(event) => onChange(event?.format("hh:mm a") || "")}
+        disabled={disable}
+      />
     </AnswerBase>
   );
 };

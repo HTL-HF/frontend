@@ -1,6 +1,6 @@
 import React from "react";
 import AnswerBase, { AnswerBaseProps } from "./AnswerBase";
-import { FormControl, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 
 interface LongAnswerProps extends AnswerBaseProps {}
 
@@ -17,33 +17,29 @@ const LongAnswer: React.FC<LongAnswerProps> = ({
       onChange={onChange}
       question={question}
     >
-      <FormControl>
-        <TextField
-          required={question.required}
-          disabled={disable}
-          value={answer}
-          multiline
-          InputProps={{
-            sx: {
-              "& .MuiOutlinedInput-root": {
-                "& textarea": {
-                  overflowY: "auto",
-                  resize: "none",
-                },
+      <TextField
+        required={question.required}
+        disabled={disable}
+        value={answer}
+        multiline
+        InputProps={{
+          sx: {
+            "& .MuiOutlinedInput-root": {
+              "& textarea": {
+                overflowY: "auto",
+                resize: "none",
               },
             },
-          }}
-          onChange={(e) => {
-            onChange(
-              question.type === "number"
-                ? Number(e.target.value)
-                : e.target.value
-            );
-          }}
-          type={question.type}
-          minRows={5}
-        />
-      </FormControl>
+          },
+        }}
+        onChange={(e) => {
+          onChange(
+            question.type === "number" ? Number(e.target.value) : e.target.value
+          );
+        }}
+        type={question.type}
+        minRows={5}
+      />
     </AnswerBase>
   );
 };

@@ -5,11 +5,10 @@ import OpenQuestion from "../components/questions/OpenQuestion";
 import ShortAnswer from "../components/answers/ShortAnswer";
 import LongAnswer from "../components/answers/LongAnswer";
 import CheckboxAnswer from "../components/answers/CheckboxAnswer";
-import RadioAnswer from "../components/answers/RadioAnswer";
+import RadioLinearAnswer from "../components/answers/RadioLinearAnswer";
 import DropdownAnswer from "../components/answers/DropdownAnswer";
 import DateAnswer from "../components/answers/DateAnswer";
 import TimeAnswer from "../components/answers/TimeAnswer";
-import LinearScaleAnswer from "../components/answers/LinearScaleAnswer";
 
 export interface QuestionModel {
   title: string;
@@ -54,9 +53,9 @@ export const answerComponentMap = {
   SHORT: ShortAnswer,
   LONG: LongAnswer,
   CHECKBOX: CheckboxAnswer,
-  RADIO: RadioAnswer,
+  RADIO: RadioLinearAnswer,
   DROPDOWN: DropdownAnswer,
-  LINEAR: LinearScaleAnswer,
+  LINEAR: RadioLinearAnswer,
   DATE: DateAnswer,
   TIME: TimeAnswer,
 };

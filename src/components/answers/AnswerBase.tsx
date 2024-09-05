@@ -1,4 +1,4 @@
-import { Box, styled, Typography } from "@mui/material";
+import { Box, FormControl, styled, Typography } from "@mui/material";
 import React, { ReactNode } from "react";
 import { QuestionAnsweringModal } from "../../types/form";
 
@@ -29,7 +29,7 @@ const AnswerBase: React.FC<AnswerBaseProps> = ({ question, children }) => {
           {question.description}
         </Typography>
       )}
-      {children}
+      <FormControl>{children}</FormControl>
     </AnswerBox>
   );
 };

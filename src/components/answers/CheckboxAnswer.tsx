@@ -1,11 +1,6 @@
 import React, { useEffect } from "react";
 import AnswerBase, { AnswerBaseProps } from "./AnswerBase";
-import {
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-} from "@mui/material";
+import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
 
 interface CheckboxAnswerProps extends AnswerBaseProps {}
 
@@ -29,37 +24,30 @@ const CheckboxAnswer: React.FC<CheckboxAnswerProps> = ({
       question={question}
     >
       {Array.isArray(answer) && (
-        <FormControl required={question.required}>
-          <FormGroup>
-            {question.options &&
-              question.options.map((option, index) => (
-                <FormControlLabel
-                  key={index}
-                  control={
-                    <Checkbox
-                      disabled={disable}
-                      checked={
-                        typeof option === "string" && answer.includes(option)
+        <FormGroup>
+          {question.options &&
+            question.options.map((option, index) => (
+              <FormControlLabel
+                key={index}
+                control={
+                  <Checkbox
+                    disabled={disable}
+                    checked={
+                      typeof option === "string" && answer.includes(option)
+                    }
+                    onChange={(event) => {
+                      if (event.target.checked && typeof option === "string") {
+                        onChange(answer.concat(option));
+                      } else {
+                        onChange(answer.filter((answer) => answer !== option));
                       }
-                      onChange={(event) => {
-                        if (
-                          event.target.checked &&
-                          typeof option === "string"
-                        ) {
-                          onChange(answer.concat(option));
-                        } else {
-                          onChange(
-                            answer.filter((answer) => answer !== option)
-                          );
-                        }
-                      }}
-                    />
-                  }
-                  label={option}
-                ></FormControlLabel>
-              ))}
-          </FormGroup>
-        </FormControl>
+                    }}
+                  />
+                }
+                label={option}
+              ></FormControlLabel>
+            ))}
+        </FormGroup>
       )}
     </AnswerBase>
   );

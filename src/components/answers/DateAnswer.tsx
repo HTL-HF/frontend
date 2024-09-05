@@ -1,6 +1,5 @@
 import React from "react";
 import AnswerBase, { AnswerBaseProps } from "./AnswerBase";
-import { FormControl } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import moment from "moment";
 
@@ -19,12 +18,11 @@ const DateAnswer: React.FC<DateAnswerProps> = ({
       onChange={onChange}
       question={question}
     >
-      <FormControl>
-        <DatePicker
-          value={moment(answer)}
-          onChange={(event) => (event ? onChange(event.toISOString()) : "")}
-        />
-      </FormControl>
+      <DatePicker
+        value={moment(answer)}
+        onChange={(event) => onChange(event?.toISOString() || "")}
+        disabled={disable}
+      />
     </AnswerBase>
   );
 };
