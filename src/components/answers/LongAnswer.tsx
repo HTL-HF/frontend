@@ -1,6 +1,6 @@
 import React from "react";
 import AnswerBase, { AnswerBaseProps } from "./AnswerBase";
-import { FormControl, TextareaAutosize, TextField } from "@mui/material";
+import { FormControl, TextField } from "@mui/material";
 
 interface LongAnswerProps extends AnswerBaseProps {}
 

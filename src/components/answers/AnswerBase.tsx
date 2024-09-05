@@ -13,7 +13,7 @@ const AnswerBox = styled(Box)(({ theme }) => ({
 export interface AnswerBaseProps {
   question: QuestionAnsweringModal;
   children?: ReactNode;
-  answer: number | string;
+  answer: number | string | string[];
   disable: boolean;
   onChange: (value: string | number | string[]) => void;
 }

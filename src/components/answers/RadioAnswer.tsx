@@ -1,10 +1,8 @@
 import React from "react";
 import AnswerBase, { AnswerBaseProps } from "./AnswerBase";
 import {
-  Checkbox,
   FormControl,
   FormControlLabel,
-  FormGroup,
   Radio,
   RadioGroup,
 } from "@mui/material";

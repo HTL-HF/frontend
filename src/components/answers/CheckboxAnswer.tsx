@@ -36,9 +36,14 @@ const CheckboxAnswer: React.FC<CheckboxAnswerProps> = ({
                   control={
                     <Checkbox
                       disabled={disable}
-                      checked={answer.includes(option)}
+                      checked={
+                        typeof option === "string" && answer.includes(option)
+                      }
                       onChange={(event) => {
-                        if (event.target.checked) {
+                        if (
+                          event.target.checked &&
+                          typeof option === "string"
+                        ) {
                           onChange(answer.concat(option));
                         } else {
                           onChange(

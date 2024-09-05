@@ -12,7 +12,6 @@ const TimeAnswer: React.FC<TimeAnswerProps> = ({
   disable,
   onChange,
 }) => {
-  console.log(answer);
   return (
     <AnswerBase
       answer={answer}

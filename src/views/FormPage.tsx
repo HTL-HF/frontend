@@ -21,7 +21,7 @@ const FormPage = () => {
   const [form, setForm] = useState<FormAnswerModel | null>(null);
   const { showNotification } = useNotification();
   const navigator = useNavigate();
-  const [answers, setAnswers] = useState<{ [id: string]: string | number }>({});
+  const [answers, setAnswers] = useState<{ [id: string]: string | number | string[] }>({});
 
   useEffect(() => {
     const getForm = async (id: string | undefined) => {
