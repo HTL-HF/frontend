@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import AnswerBase, { AnswerBaseProps } from "./AnswerBase";
-import { FormControl, MenuItem, Select } from "@mui/material";
+import { MenuItem, Select } from "@mui/material";
 
 interface DropdownAnswerProps extends AnswerBaseProps {}
 
