@@ -2,7 +2,6 @@ import LinearScaleQuestion from "../components/questions/LinearScaleQuestion";
 import OptionQuestion from "../components/questions/OptionQuestion";
 import QuestionBase from "../components/questions/QuestionBase";
 import OpenQuestion from "../components/questions/OpenQuestion";
-import AnswerBase from "../components/answers/AnswerBase";
 import ShortAnswer from "../components/answers/ShortAnswer";
 import LongAnswer from "../components/answers/LongAnswer";
 import CheckboxAnswer from "../components/answers/CheckboxAnswer";
@@ -10,6 +9,7 @@ import RadioAnswer from "../components/answers/RadioAnswer";
 import DropdownAnswer from "../components/answers/DropdownAnswer";
 import DateAnswer from "../components/answers/DateAnswer";
 import TimeAnswer from "../components/answers/TimeAnswer";
+import LinearScaleAnswer from "../components/answers/LinearScaleAnswer";
 
 export interface QuestionModel {
   title: string;
@@ -56,7 +56,7 @@ export const answerComponentMap = {
   CHECKBOX: CheckboxAnswer,
   RADIO: RadioAnswer,
   DROPDOWN: DropdownAnswer,
-  LINEAR: AnswerBase,
+  LINEAR: LinearScaleAnswer,
   DATE: DateAnswer,
   TIME: TimeAnswer,
 };
