@@ -45,3 +45,26 @@ export const sendCreateForm = async (
   }
   return false;
 };
+
+export const sendGetForm = async (
+  id: string,
+  showNotification: (message: string, severity: AlertColor) => void,
+  navigator: (path: string) => void
+) => {
+  try {
+    return (await server.get(`/forms/${id}`)).data;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      showError(
+        err,
+        {
+          [StatusCodes.UNAUTHORIZED]: "You need to login",
+        },
+        showNotification
+      );
+      if (err.response?.status == StatusCodes.NOT_FOUND) {
+        navigator("/404");
+      }
+    }
+  }
+};

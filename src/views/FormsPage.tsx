@@ -7,7 +7,7 @@ import { sendDeleteForm } from "../api/forms";
 import AddButton from "../components/buttons/AddButton";
 import { useNavigate } from "react-router-dom";
 
-const FormPage = () => {
+const FormsPage = () => {
   const [forms, setForms] = useState<{ id: string; title: string }[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedFormId, setSelectedFormId] = useState<string | null>(null);
@@ -87,4 +87,4 @@ const FormPage = () => {
   );
 };
 
-export default FormPage;
+export default FormsPage;

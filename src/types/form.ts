@@ -2,6 +2,11 @@ import LinearScaleQuestion from "../components/questions/LinearScaleQuestion";
 import OptionQuestion from "../components/questions/OptionQuestion";
 import QuestionBase from "../components/questions/QuestionBase";
 import OpenQuestion from "../components/questions/OpenQuestion";
+import AnswerBase from "../components/answers/AnswerBase";
+import ShortAnswer from "../components/answers/ShortAnswer";
+import LongAnswer from "../components/answers/LongAnswer";
+import CheckboxAnswer from "../components/answers/CheckboxAnswer";
+import RadioAnswer from "../components/answers/RadioAnswer";
 
 export interface QuestionModel {
   title: string;
@@ -20,6 +25,11 @@ export interface QuestionModel {
     | "LINEAR";
 }
 
+export type QuestionAnsweringModal = QuestionModel & { id: string };
+
+export type FormAnswerModel = Omit<FormModel, "questions"> & {
+  questions: QuestionAnsweringModal[];
+};
 export interface FormModel {
   title: string;
   description?: string;
@@ -35,4 +45,15 @@ export const questionComponentMap = {
   LINEAR: LinearScaleQuestion,
   DATE: QuestionBase,
   TIME: QuestionBase,
+};
+
+export const answerComponentMap = {
+  SHORT: ShortAnswer,
+  LONG: LongAnswer,
+  CHECKBOX: CheckboxAnswer,
+  RADIO: RadioAnswer,
+  DROPDOWN: AnswerBase,
+  LINEAR: AnswerBase,
+  DATE: AnswerBase,
+  TIME: AnswerBase,
 };
