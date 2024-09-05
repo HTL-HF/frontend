@@ -8,8 +8,10 @@ import { useEffect } from "react";
 import { loadUserFromToken } from "./utils/token";
 import { useDispatch } from "react-redux";
 import { changeUser } from "./types/actions";
-import FormPage from "./views/FormsPage";
+import FormsPage from "./views/FormsPage";
 import CreateFormPage from "./views/CreateFromPage";
+import FormPage from "./views/FormPage";
+import PageNotFoundPage from "./views/PageNotFoundPage";
 function App() {
   const dispatch = useDispatch();
 
@@ -26,9 +28,11 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/forms" element={<FormPage />} />
+        <Route path="/forms" element={<FormsPage />} />
         <Route path="/forms/create" element={<CreateFormPage />} />
+        <Route path="/forms/:id" element={<FormPage />} />
 
+        <Route path="*" element={<PageNotFoundPage />} />
       </Routes>
 
       <ToastContainer />
