@@ -1,10 +1,6 @@
 import React from "react";
 import AnswerBase, { AnswerBaseProps } from "./AnswerBase";
-import {
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-} from "@mui/material";
+import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
 
 interface RadioLinearAnswerProps extends AnswerBaseProps {}
 
@@ -23,7 +19,7 @@ const RadioLinearAnswer: React.FC<RadioLinearAnswerProps> = ({
     >
       <RadioGroup
         row={question.viewType === "LINEAR"}
-        value={answer}
+        value={answer ? answer : null}
         onChange={(event) => onChange(event.target.value)}
       >
         {question.options?.map((option, index) => (

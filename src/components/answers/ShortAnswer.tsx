@@ -20,7 +20,7 @@ const ShortAnswer: React.FC<AnswerShortProps> = ({
       <TextField
         required={question.required}
         disabled={disable}
-        value={answer}
+        value={answer !== undefined ? answer : ""}
         onChange={(e) => {
           onChange(
             question.type === "number" ? Number(e.target.value) : e.target.value

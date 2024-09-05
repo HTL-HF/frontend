@@ -4,6 +4,7 @@ import { sendGetForm } from "../api/forms";
 import { useNotification } from "../hooks/notifications";
 import { answerComponentMap, FormAnswerModel } from "../types/form";
 import { Container, Typography, Box, styled } from "@mui/material";
+import SaveButton from "../components/buttons/SaveButton";
 
 const StyledBox = styled(Box)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
@@ -21,7 +22,9 @@ const FormPage = () => {
   const [form, setForm] = useState<FormAnswerModel | null>(null);
   const { showNotification } = useNotification();
   const navigator = useNavigate();
-  const [answers, setAnswers] = useState<{ [id: string]: string | number | string[] }>({});
+  const [answers, setAnswers] = useState<{
+    [id: string]: string | number | string[];
+  }>({});
 
   useEffect(() => {
     const getForm = async (id: string | undefined) => {
@@ -38,6 +41,10 @@ const FormPage = () => {
     };
     getForm(id);
   }, [id, showNotification, navigator]);
+
+  const sendForm = () => {
+      
+  };
 
   return (
     <Container maxWidth="md" style={{ marginTop: "50px" }}>
@@ -68,6 +75,7 @@ const FormPage = () => {
               />
             );
           })}
+          <SaveButton onClick={sendForm} />
         </StyledBox>
       )}
     </Container>

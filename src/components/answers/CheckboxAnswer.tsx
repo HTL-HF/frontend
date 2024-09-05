@@ -1,6 +1,11 @@
 import React, { useEffect } from "react";
 import AnswerBase, { AnswerBaseProps } from "./AnswerBase";
-import { Checkbox, FormControlLabel, FormGroup } from "@mui/material";
+import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+} from "@mui/material";
 
 interface CheckboxAnswerProps extends AnswerBaseProps {}
 
@@ -14,7 +19,7 @@ const CheckboxAnswer: React.FC<CheckboxAnswerProps> = ({
     if (!Array.isArray(answer)) {
       onChange([]);
     }
-  }, []);
+  }, [answer,onChange]);
 
   return (
     <AnswerBase
@@ -24,30 +29,37 @@ const CheckboxAnswer: React.FC<CheckboxAnswerProps> = ({
       question={question}
     >
       {Array.isArray(answer) && (
-        <FormGroup>
-          {question.options &&
-            question.options.map((option, index) => (
-              <FormControlLabel
-                key={index}
-                control={
-                  <Checkbox
-                    disabled={disable}
-                    checked={
-                      typeof option === "string" && answer.includes(option)
-                    }
-                    onChange={(event) => {
-                      if (event.target.checked && typeof option === "string") {
-                        onChange(answer.concat(option));
-                      } else {
-                        onChange(answer.filter((answer) => answer !== option));
+        <FormControl>
+          <FormGroup>
+            {question.options &&
+              question.options.map((option, index) => (
+                <FormControlLabel
+                  key={index}
+                  control={
+                    <Checkbox
+                      disabled={disable}
+                      checked={
+                        typeof option === "string" && answer.includes(option)
                       }
-                    }}
-                  />
-                }
-                label={option}
-              ></FormControlLabel>
-            ))}
-        </FormGroup>
+                      onChange={(event) => {
+                        if (
+                          event.target.checked &&
+                          typeof option === "string"
+                        ) {
+                          onChange(answer.concat(option));
+                        } else {
+                          onChange(
+                            answer.filter((answer) => answer !== option)
+                          );
+                        }
+                      }}
+                    />
+                  }
+                  label={option}
+                ></FormControlLabel>
+              ))}
+          </FormGroup>
+        </FormControl>
       )}
     </AnswerBase>
   );

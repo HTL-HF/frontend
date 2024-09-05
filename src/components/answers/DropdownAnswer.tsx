@@ -14,7 +14,7 @@ const DropdownAnswer: React.FC<DropdownAnswerProps> = ({
     if (!answer && question.options) {
       onChange(question.options[0]);
     }
-  }, []);
+  }, [answer,onChange,question.options]);
 
   return (
     <AnswerBase
