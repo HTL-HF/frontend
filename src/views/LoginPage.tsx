@@ -34,7 +34,7 @@ const LoginPage = () => {
       showNotification("You are already logged in", "error");
       navigate(paths.home);
     }
-  }, []);
+  }, [user,showNotification,navigate]);
 
   return (
     <FormLayout title="Login" onSubmit={handleLogin} buttonText="Login">

@@ -18,16 +18,16 @@ const FormPage = () => {
   useEffect(() => {
     const getForms = async () => {
       const forms = await sendGetForms(showNotification);
-
+      
       if (!forms) {
         pageNavigator(paths.login);
         return;
       }
-      
+
       setForms(forms)
     };
     getForms();
-  }, []);
+  }, [pageNavigator,showNotification]);
 
   const handleMenuClick = (
     event: React.MouseEvent<HTMLElement>,

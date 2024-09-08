@@ -27,7 +27,7 @@ const RegisterPage = () => {
       showNotification("you are already logged in", "error");
       navigate(paths.home);
     }
-  }, []);
+  }, [showNotification, navigate, user]);
 
   const register = async () => {
     if (
