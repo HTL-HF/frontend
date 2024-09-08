@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, TextField, Box } from "@mui/material";
 import CreateFormMenu from "../components/CreateFormMenu";
-import { FormModel, questionComponentMap, QuestionModel } from "../types/form";
+import { FormModel, QuestionModel } from "../types/form";
 import AddButton from "../components/buttons/AddButton";
 import SaveButton from "../components/buttons/SaveButton";
 import { useNotification } from "../hooks/notifications";
@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { AppState } from "../store/rootReducer";
 import paths from "../configs/pathsConfig";
+import Questions from "../components/questions/Questions";
 
 const CreateFormPage = () => {
   const { showNotification } = useNotification();
@@ -80,7 +81,8 @@ const CreateFormPage = () => {
         form.questions.some(
           (question) =>
             !question.title ||
-            (question.options && question.options.some((option) => !option && option !== 0))
+            (question.options &&
+              question.options.some((option) => !option && option !== 0))
         )
       ) {
         showNotification("All required fields must be filled!", "error");
@@ -129,20 +131,11 @@ const CreateFormPage = () => {
         }
       />
 
-      {form.questions.map((question, index) => {
-        const QuestionComponent = questionComponentMap[question.viewType];
-
-        return (
-          <QuestionComponent
-            key={index}
-            question={question}
-            onChange={(updatedQuestion: QuestionModel) =>
-              handleQuestionChange(index, updatedQuestion)
-            }
-            onDelete={() => handleQuestionDelete(index)}
-          />
-        );
-      })}
+      <Questions
+        questions={form.questions}
+        handleQuestionChange={handleQuestionChange}
+        handleQuestionDelete={handleQuestionDelete}
+      />
 
       <AddButton onClick={handleAddButtonClick} />
 
