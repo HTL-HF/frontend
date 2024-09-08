@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import { server } from "../configs/axiosConfig";
 import { StatusCodes } from "http-status-codes";
-import { showError } from "../utils/notifications";
+import { showErrorByStatusCode } from "../utils/notifications";
 import { AlertColor } from "@mui/material";
 
 export const sendRegister = async (
@@ -30,7 +30,7 @@ export const sendRegister = async (
       const statusMap = {
         [StatusCodes.CONFLICT]: "This email or username is already taken.",
       };
-      showError(err, statusMap, showNotification);
+      showErrorByStatusCode(err, statusMap, showNotification);
     }
   }
 
@@ -57,7 +57,7 @@ export const sendLogin = async (
       const statusMap = {
         [StatusCodes.NOT_FOUND]: "Invalid username or password.",
       };
-      showError(err, statusMap, showNotification);
+      showErrorByStatusCode(err, statusMap, showNotification);
     }
   }
 
@@ -74,7 +74,7 @@ export const sendGetForms = async (
       const statusMap = {
         [StatusCodes.UNAUTHORIZED]: "You need to log in to access this.",
       };
-      showError(err, statusMap, showNotification);
+      showErrorByStatusCode(err, statusMap, showNotification);
     }
   }
 };

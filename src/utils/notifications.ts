@@ -2,7 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import { AxiosError } from "axios";
 import { AlertColor } from "@mui/material";
 
-const showErrorCustomMessage = (
+const showErrorByStatusCodeCustom = (
   error: AxiosError,
   statusMap: Partial<Record<StatusCodes, string>>,
   showNotification: (message: string, severity: AlertColor) => void
@@ -20,7 +20,7 @@ const showErrorCustomMessage = (
   }
 };
 
-const showErrorDefaultMessage = (
+const showErrorByStatusCodeDefault = (
   error: AxiosError,
   possibleStatusCodes: StatusCodes[],
   showNotification: (message: string, severity: AlertColor) => void
@@ -30,17 +30,17 @@ const showErrorDefaultMessage = (
     return map;
   }, {} as Partial<Record<StatusCodes, string>>);
 
-  showErrorCustomMessage(error, statusMap, showNotification);
+  showErrorByStatusCodeCustom(error, statusMap, showNotification);
 };
 
-export const showError = (
+export const showErrorByStatusCode = (
   error: AxiosError,
   statusMap: Partial<Record<StatusCodes, string>> | StatusCodes[],
   showNotification: (message: string, severity: AlertColor) => void
 ) => {
   if (Array.isArray(statusMap)) {
-    showErrorDefaultMessage(error, statusMap, showNotification);
+    showErrorByStatusCodeDefault(error, statusMap, showNotification);
   } else {
-    showErrorCustomMessage(error, statusMap, showNotification);
+    showErrorByStatusCodeCustom(error, statusMap, showNotification);
   }
 };

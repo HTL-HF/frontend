@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import { server } from "../configs/axiosConfig";
 import { StatusCodes } from "http-status-codes";
-import { showError } from "../utils/notifications";
+import { showErrorByStatusCode } from "../utils/notifications";
 import { AlertColor } from "@mui/material";
 import { FormModel } from "../types/form";
 
@@ -22,7 +22,7 @@ export const sendDeleteForm = async (
       const statusMap = {
         [StatusCodes.UNAUTHORIZED]: "You need to login",
       };
-      showError(err, statusMap, showNotification);
+      showErrorByStatusCode(err, statusMap, showNotification);
     }
   }
 };
@@ -40,7 +40,7 @@ export const sendCreateForm = async (
         [StatusCodes.UNAUTHORIZED]: "You need to login",
         [StatusCodes.NOT_ACCEPTABLE]: err.response?.data,
       };
-      showError(err, statusMap, showNotification);
+      showErrorByStatusCode(err, statusMap, showNotification);
     }
   }
   return false;
