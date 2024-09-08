@@ -35,13 +35,6 @@ const theme = createTheme({
     borderRadius: 8,
   },
   components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: 8,
-        },
-      },
-    },
     MuiMenuItem: {
       styleOverrides: {
         root: {
@@ -56,8 +49,7 @@ const theme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
-          marginBottom: "16px", 
-          borderRadius: "8px",
+          marginBottom: "16px",
         },
       },
     },
