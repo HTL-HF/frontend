@@ -11,6 +11,9 @@ import { useSelector } from "react-redux";
 import { AppState } from "../store/rootReducer";
 import paths from "../configs/pathsConfig";
 import Questions from "../components/questions/Questions";
+import { AxiosError } from "axios";
+import { StatusCodes } from "http-status-codes";
+import { getErrorMessage } from "../utils/notifications";
 
 const CreateFormPage = () => {
   const { showNotification } = useNotification();
@@ -36,7 +39,7 @@ const CreateFormPage = () => {
       navigator(paths.login);
     }
   }, [user, navigator, showNotification]);
-  
+
   const getOptions = (viewType: QuestionModel["viewType"]) => {
     switch (viewType) {
       case "LINEAR":
@@ -94,9 +97,18 @@ const CreateFormPage = () => {
         showNotification("All required fields must be filled!", "error");
         return;
       }
-
-      if (await sendCreateForm(form, showNotification)) {
+      try {
+        await sendCreateForm(form);
         navigator(paths.forms);
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          const statusMap = {
+            [StatusCodes.UNAUTHORIZED]: "You need to login",
+            [StatusCodes.NOT_ACCEPTABLE]: err.response?.data,
+          };
+
+          showNotification(getErrorMessage(err, statusMap), "error");
+        }
       }
     };
 

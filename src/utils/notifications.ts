@@ -1,46 +1,44 @@
 import { StatusCodes } from "http-status-codes";
 import { AxiosError } from "axios";
-import { AlertColor } from "@mui/material";
 
-const showErrorByStatusCodeCustom = (
+const getErrorMessageByStatusCodeCustom = (
   error: AxiosError,
-  statusMap: Partial<Record<StatusCodes, string>>,
-  showNotification: (message: string, severity: AlertColor) => void
-) => {
+  statusMap: Partial<Record<StatusCodes, string>>
+): string => {
   const statusCode = error.response?.status as StatusCodes;
 
   if (statusCode && statusMap[statusCode]) {
-    showNotification(statusMap[statusCode] as string, "error");
+    return statusMap[statusCode] as string;
   } else {
-    showNotification(
-      "Something wrong with the server, try again later",
-      "error"
-    );
-    console.log(error);
+    return "Something wrong with the server, try again later";
   }
 };
 
-const showErrorByStatusCodeDefault = (
+const getErrorMessageByStatusCodeDefault = (
   error: AxiosError,
-  possibleStatusCodes: StatusCodes[],
-  showNotification: (message: string, severity: AlertColor) => void
+  possibleStatusCodes: StatusCodes[]
 ) => {
   const statusMap = possibleStatusCodes.reduce((map, code) => {
     map[code] = error.response?.data as string;
     return map;
   }, {} as Partial<Record<StatusCodes, string>>);
 
-  showErrorByStatusCodeCustom(error, statusMap, showNotification);
+  return getErrorMessageByStatusCodeCustom(error, statusMap);
 };
 
-export const showErrorByStatusCode = (
-  error: AxiosError,
-  statusMap: Partial<Record<StatusCodes, string>> | StatusCodes[],
-  showNotification: (message: string, severity: AlertColor) => void
-) => {
-  if (Array.isArray(statusMap)) {
-    showErrorByStatusCodeDefault(error, statusMap, showNotification);
-  } else {
-    showErrorByStatusCodeCustom(error, statusMap, showNotification);
+export const getErrorMessage = (
+  error: unknown,
+  statusMap: Partial<Record<StatusCodes, string>> | StatusCodes[]
+): string => {
+  if (!(error instanceof AxiosError)) {
+    console.log(error);
+
+    return "Unknown error";
   }
+
+  if (Array.isArray(statusMap)) {
+    return getErrorMessageByStatusCodeDefault(error, statusMap);
+  }
+
+  return getErrorMessageByStatusCodeCustom(error, statusMap);
 };

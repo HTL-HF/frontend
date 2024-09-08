@@ -7,6 +7,8 @@ import { sendDeleteForm } from "../api/forms";
 import AddButton from "../components/buttons/AddButton";
 import { useNavigate } from "react-router-dom";
 import paths from "../configs/pathsConfig";
+import { StatusCodes } from "http-status-codes";
+import { getErrorMessage } from "../utils/notifications";
 
 const FormPage = () => {
   const [forms, setForms] = useState<{ id: string; title: string }[]>([]);
@@ -17,17 +19,19 @@ const FormPage = () => {
 
   useEffect(() => {
     const getForms = async () => {
-      const forms = await sendGetForms(showNotification);
-      
-      if (!forms) {
-        pageNavigator(paths.login);
-        return;
-      }
+      try {
+        setForms(await sendGetForms());
+      } catch (err) {
+        const statusMap = {
+          [StatusCodes.UNAUTHORIZED]: "You need to log in to access this.",
+        };
 
-      setForms(forms)
+        showNotification(getErrorMessage(err, statusMap), "error");
+        pageNavigator(paths.login);
+      }
     };
     getForms();
-  }, [pageNavigator,showNotification]);
+  }, [pageNavigator, showNotification]);
 
   const handleMenuClick = (
     event: React.MouseEvent<HTMLElement>,
@@ -47,8 +51,17 @@ const FormPage = () => {
     const deleteFromServerHandler = async () => {
       if (selectedFormId !== null) {
         setForms(forms.filter((form) => form.id !== selectedFormId));
-        await sendDeleteForm(selectedFormId, showNotification);
-        handleClose();
+        try {
+          await sendDeleteForm(selectedFormId);
+          showNotification("deleted form successfully", "success");
+
+          handleClose();
+        } catch (err) {
+          const statusMap = {
+            [StatusCodes.UNAUTHORIZED]: "You need to login",
+          };
+          showNotification(getErrorMessage(err, statusMap), "error");
+        }
       }
     };
     deleteFromServerHandler();
