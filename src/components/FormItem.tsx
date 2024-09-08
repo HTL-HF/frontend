@@ -38,23 +38,26 @@ const FormItem: React.FC<FormItemProps> = ({
   onShare,
 }) => {
   const navigator = useNavigate();
-  const menuItems = [
-    { label: "Delete", icon: <Delete />, action: onDelete },
-    {
-      label: "Open",
-      icon: <OpenInNew />,
-      action: () => {
-        navigator(paths.form(form.id));
+  const menuItems = useMemo(
+    () => [
+      { label: "Delete", icon: <Delete />, action: onDelete },
+      {
+        label: "Open",
+        icon: <OpenInNew />,
+        action: () => {
+          navigator(paths.form(form.id));
+        },
       },
-    },
-    { label: "Share", icon: <Share />, action: onShare },
-  ];
+      { label: "Share", icon: <Share />, action: onShare },
+    ],
+    [form.id, navigator, onShare, onDelete]
+  );
 
   const open = useMemo(
     () => Boolean(anchorEl && selectedFormId === form.id),
     [anchorEl, selectedFormId, form.id]
   );
-  
+
   return (
     <FormItemContainer>
       <Typography variant="h6" noWrap>
