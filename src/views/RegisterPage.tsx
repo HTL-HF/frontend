@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loadUserFromToken } from "../utils/token";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { changeUser } from "../types/actions";
 import FormLayout from "../components/FormLayout";
 import FormField from "../components/FormField";
 import { useNotification } from "../hooks/notifications";
-import { AppState } from "../store/rootReducer";
 import paths from "../configs/pathsConfig";
 import { getErrorMessage } from "../utils/notifications";
 import { StatusCodes } from "http-status-codes";
@@ -22,25 +21,16 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { showNotification } = useNotification();
-  const user = useSelector((state: AppState) => state.user);
-
-  useEffect(() => {
-    if (user) {
-      showNotification("you are already logged in", "error");
-      navigate(paths.home);
-    }
-  }, [showNotification, navigate, user]);
 
   const register = async () => {
     try {
-
       await sendRegister(
         firstName,
         lastName,
         username,
         email,
-        SHA512(password),
-      )
+        SHA512(password)
+      );
       const user = loadUserFromToken();
 
       if (user) {

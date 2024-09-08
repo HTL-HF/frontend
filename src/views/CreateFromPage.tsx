@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Container, TextField, Box } from "@mui/material";
 import CreateFormMenu from "../components/CreateFormMenu";
 import { FormModel, QuestionModel } from "../types/form";
@@ -18,7 +18,6 @@ import { getErrorMessage } from "../utils/notifications";
 const CreateFormPage = () => {
   const { showNotification } = useNotification();
   const navigator = useNavigate();
-  const user = useSelector((state: AppState) => state.user);
   const [form, setForm] = useState<FormModel>({
     title: "",
     questions: [],
@@ -33,12 +32,6 @@ const CreateFormPage = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-  useEffect(() => {
-    if (!user) {
-      showNotification("You need to login first", "error");
-      navigator(paths.login);
-    }
-  }, [user, navigator, showNotification]);
 
   const getOptions = (viewType: QuestionModel["viewType"]) => {
     switch (viewType) {

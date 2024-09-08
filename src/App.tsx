@@ -13,6 +13,7 @@ import FormPage from "./views/FormPage";
 import PageNotFoundPage from "./views/PageNotFoundPage";
 import paths from "./configs/pathsConfig";
 import FormsPage from "./views/FormsPage";
+import UserChecker from "./components/UserChecker";
 function App() {
   const dispatch = useDispatch();
 
@@ -27,10 +28,38 @@ function App() {
     <>
       <Routes>
         <Route path={paths.home} element={<HomePage />} />
-        <Route path={paths.register} element={<RegisterPage />} />
-        <Route path={paths.login} element={<LoginPage />} />
-        <Route path={paths.forms} element={<FormsPage />} />
-        <Route path={paths.createForm} element={<CreateFormPage />} />
+        <Route
+          path={paths.register}
+          element={
+            <UserChecker forceLogin={false}>
+              <RegisterPage />
+            </UserChecker>
+          }
+        />
+        <Route
+          path={paths.login}
+          element={
+            <UserChecker forceLogin={false}>
+              <LoginPage />
+            </UserChecker>
+          }
+        />
+        <Route
+          path={paths.forms}
+          element={
+            <UserChecker forceLogin={true}>
+              <FormsPage />
+            </UserChecker>
+          }
+        />
+        <Route
+          path={paths.createForm}
+          element={
+            <UserChecker forceLogin={true}>
+              <CreateFormPage />
+            </UserChecker>
+          }
+        />
         <Route path={paths.forms + "/:id"} element={<FormPage />} />
 
         <Route path="*" element={<PageNotFoundPage />} />
