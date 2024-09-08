@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Box, Typography, IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { MoreVert, Delete, Share, OpenInNew } from "@mui/icons-material";
@@ -50,8 +50,11 @@ const FormItem: React.FC<FormItemProps> = ({
     { label: "Share", icon: <Share />, action: onShare },
   ];
 
-  const open = Boolean(anchorEl && selectedFormId === form.id);
-
+  const open = useMemo(
+    () => Boolean(anchorEl && selectedFormId === form.id),
+    [anchorEl, selectedFormId, form.id]
+  );
+  
   return (
     <FormItemContainer>
       <Typography variant="h6" noWrap>
