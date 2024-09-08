@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, TextField, Box } from "@mui/material";
 import CreateFormMenu from "../components/CreateFormMenu";
 import { FormModel, questionComponentMap, QuestionModel } from "../types/form";
@@ -7,10 +7,13 @@ import SaveButton from "../components/buttons/SaveButton";
 import { useNotification } from "../hooks/notifications";
 import { sendCreateForm } from "../api/forms";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { AppState } from "../store/rootReducer";
 
 const CreateFormPage = () => {
   const { showNotification } = useNotification();
   const navigator = useNavigate();
+  const user = useSelector((state: AppState) => state.user);
   const [form, setForm] = useState<FormModel>({
     title: "",
     questions: [],
@@ -25,6 +28,12 @@ const CreateFormPage = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+  useEffect(() => {
+    if (user) {
+      showNotification("You need to login first", "error");
+      navigator("/login");
+    }
+  }, [user, navigator, showNotification]);
 
   const handleAddQuestion = (viewType: QuestionModel["viewType"]) => {
     const newQuestion: QuestionModel = {
