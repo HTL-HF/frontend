@@ -6,6 +6,7 @@ import { sendGetForms } from "../api/users";
 import { sendDeleteForm } from "../api/forms";
 import AddButton from "../components/buttons/AddButton";
 import { useNavigate } from "react-router-dom";
+import paths from "../configs/pathsConfig";
 
 const FormPage = () => {
   const [forms, setForms] = useState<{ id: string; title: string }[]>([]);
@@ -19,7 +20,7 @@ const FormPage = () => {
       const forms = await sendGetForms(showNotification);
       if (forms) setForms(forms);
       else if (forms === undefined) {
-        pageNavigator("/login");
+        pageNavigator(paths.login);
       }
     };
     getForms();
@@ -51,12 +52,13 @@ const FormPage = () => {
   };
 
   const handleShare = () => {
-    navigator.clipboard.writeText(
-      `${window.location.origin}/forms/${selectedFormId}`
-    );
+    if (selectedFormId) {
+      navigator.clipboard.writeText(
+        `${window.location.origin}${paths.form(selectedFormId)}`
+      );
 
-    showNotification("copied link to your clipboard", "success");
-
+      showNotification("copied link to your clipboard", "success");
+    }
     handleClose();
   };
 
@@ -82,7 +84,7 @@ const FormPage = () => {
           ))}
         </Grid>
       </Container>
-      <AddButton onClick={() => pageNavigator("/forms/create")} />
+      <AddButton onClick={() => pageNavigator(paths.createForm)} />
     </>
   );
 };

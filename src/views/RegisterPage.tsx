@@ -9,6 +9,7 @@ import FormField from "../components/FormField";
 import { useNotification } from "../hooks/notifications";
 import { sendRegister } from "../api/users";
 import { AppState } from "../store/rootReducer";
+import paths from "../configs/pathsConfig";
 
 const RegisterPage = () => {
   const [firstName, setFirstName] = useState("");
@@ -24,7 +25,7 @@ const RegisterPage = () => {
   useEffect(() => {
     if (user) {
       showNotification("you are already logged in", "error");
-      navigate("/");
+      navigate(paths.home);
     }
   }, []);
 
@@ -43,7 +44,7 @@ const RegisterPage = () => {
       if (user) {
         dispatch(changeUser(user));
       }
-      navigate("/forms");
+      navigate(paths.createForm);
     }
   };
 

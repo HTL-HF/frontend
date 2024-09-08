@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { changeUser } from "./types/actions";
 import FormPage from "./views/FormsPage";
 import CreateFormPage from "./views/CreateFromPage";
+import paths from "./configs/pathsConfig";
 function App() {
   const dispatch = useDispatch();
 
@@ -23,12 +24,11 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/forms" element={<FormPage />} />
-        <Route path="/forms/create" element={<CreateFormPage />} />
-
+        <Route path={paths.home} element={<HomePage />} />
+        <Route path={paths.register} element={<RegisterPage />} />
+        <Route path={paths.login} element={<LoginPage />} />
+        <Route path={paths.forms} element={<FormPage />} />
+        <Route path={paths.register} element={<CreateFormPage />} />
       </Routes>
 
       <ToastContainer />

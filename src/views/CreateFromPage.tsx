@@ -9,6 +9,7 @@ import { sendCreateForm } from "../api/forms";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { AppState } from "../store/rootReducer";
+import paths from "../configs/pathsConfig";
 
 const CreateFormPage = () => {
   const { showNotification } = useNotification();
@@ -31,7 +32,7 @@ const CreateFormPage = () => {
   useEffect(() => {
     if (user) {
       showNotification("You need to login first", "error");
-      navigator("/login");
+      navigator(paths.login);
     }
   }, [user, navigator, showNotification]);
 
@@ -87,7 +88,7 @@ const CreateFormPage = () => {
       }
 
       if (await sendCreateForm(form, showNotification)) {
-        navigator("/forms");
+        navigator(paths.forms);
       }
     };
 

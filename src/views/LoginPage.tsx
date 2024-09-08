@@ -9,6 +9,7 @@ import FormLayout from "../components/FormLayout";
 import FormField from "../components/FormField";
 import { useNotification } from "../hooks/notifications";
 import { AppState } from "../store/rootReducer";
+import paths from "../configs/pathsConfig";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -24,14 +25,14 @@ const LoginPage = () => {
       if (user) {
         dispatch(changeUser(user));
       }
-      navigate("/forms");
+      navigate(paths.forms);
     }
   };
 
   useEffect(() => {
     if (user) {
       showNotification("You are already logged in", "error");
-      navigate("/");
+      navigate(paths.home);
     }
   }, []);
 

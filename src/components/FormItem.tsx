@@ -7,6 +7,7 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import React from "react";
 import MenuComponent from "./MenuComponent";
 import { useNavigate } from "react-router-dom";
+import paths from "../configs/pathsConfig";
 
 interface FormItemProps {
   form: { id: string; title: string };
@@ -46,7 +47,7 @@ const FormItem: React.FC<FormItemProps> = ({
       label: "Open",
       icon: <OpenInNewIcon />,
       action: () => {
-        navigator(`/forms/${form.id}`);
+        navigator(paths.form(form.id));
       },
     },
     { label: "Share", icon: <ShareIcon />, action: onShare },
