@@ -8,6 +8,9 @@ import SaveButton from "../components/buttons/SaveButton";
 import { ResponseModal } from "../types/response";
 import moment from "moment";
 import { sendResponse } from "../api/responses";
+import { AxiosError } from "axios";
+import { StatusCodes } from "http-status-codes";
+import { getErrorMessage } from "../utils/notifications";
 
 const StyledBox = styled(Box)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
@@ -34,11 +37,25 @@ const FormPage = () => {
       if (!id) {
         navigator("/404");
       } else {
-        const form = await sendGetForm(id, showNotification, navigator);
-        if (!form) {
-          navigator("/404");
-        } else {
-          setForm(form);
+        try {
+          const form = await sendGetForm(id);
+          if (!form) {
+            navigator("/404");
+          } else {
+            setForm(form);
+          }
+        } catch (err) {
+          if (err instanceof AxiosError) {
+            const statusMap = {
+              [StatusCodes.UNAUTHORIZED]: "You need to login",
+            };
+
+            showNotification(getErrorMessage(err, statusMap), "error");
+            
+            if (err.response?.status == StatusCodes.NOT_FOUND) {
+              navigator("/404");
+            }
+          }
         }
       }
     };
