@@ -20,7 +20,11 @@ const RadioLinearAnswer: React.FC<RadioLinearAnswerProps> = ({
       <RadioGroup
         row={question.viewType === "LINEAR"}
         value={answer ? answer : null}
-        onChange={(event) => onChange(event.target.value)}
+        onChange={(event) =>
+          question.viewType === "LINEAR"
+            ? onChange(Number(event.target.value))
+            : onChange(event.target.value)
+        }
       >
         {question.options?.map((option, index) => (
           <FormControlLabel

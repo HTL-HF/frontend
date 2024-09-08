@@ -31,6 +31,7 @@ export type QuestionAnsweringModal = QuestionModel & { id: string };
 
 export type FormAnswerModel = Omit<FormModel, "questions"> & {
   questions: QuestionAnsweringModal[];
+  id: string;
 };
 export interface FormModel {
   title: string;

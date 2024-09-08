@@ -5,6 +5,9 @@ import { useNotification } from "../hooks/notifications";
 import { answerComponentMap, FormAnswerModel } from "../types/form";
 import { Container, Typography, Box, styled } from "@mui/material";
 import SaveButton from "../components/buttons/SaveButton";
+import { ResponseModal } from "../types/response";
+import moment from "moment";
+import { sendResponse } from "../api/responses";
 
 const StyledBox = styled(Box)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
@@ -42,8 +45,46 @@ const FormPage = () => {
     getForm(id);
   }, [id, showNotification, navigator]);
 
-  const sendForm = () => {
-      
+  const handleSaveResponse = () => {
+    const saveResponse = async () => {
+      if (form) {
+        const response: ResponseModal = {
+          submittedAt: moment.now(),
+          answers: [],
+        };
+
+        for (const question of form.questions) {
+          const answer = answers[question.id];
+
+          if (!answer && question.required && typeof answer !== "number") {
+            showNotification(
+              "not all required questions have been answered",
+              "error"
+            );
+            return;
+          }
+
+          if (answer || typeof answer === "number") {
+            if (
+              (Array.isArray(answer) && answer.length > 0) ||
+              !Array.isArray(answer)
+            ) {
+              response.answers.push({
+                questionId: question.id,
+                answer: answer,
+              });
+            }
+          }
+        }
+
+        if (await sendResponse(form.id, response, showNotification)) {
+          showNotification("sent answers", "success");
+          navigator("/");
+        }
+      }
+    };
+
+    saveResponse();
   };
 
   return (
@@ -75,7 +116,7 @@ const FormPage = () => {
               />
             );
           })}
-          <SaveButton onClick={sendForm} />
+          <SaveButton onClick={handleSaveResponse} />
         </StyledBox>
       )}
     </Container>
