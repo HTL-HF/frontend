@@ -12,6 +12,7 @@ import FormsPage from "./views/FormsPage";
 import CreateFormPage from "./views/CreateFromPage";
 import FormPage from "./views/FormPage";
 import PageNotFoundPage from "./views/PageNotFoundPage";
+import Navbar from "./components/Navbar";
 function App() {
   const dispatch = useDispatch();
 
@@ -24,6 +25,7 @@ function App() {
 
   return (
     <>
+      <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/register" element={<RegisterPage />} />
