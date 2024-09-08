@@ -1,12 +1,14 @@
 import React, { ReactNode } from "react";
-import ShortTextIcon from "@mui/icons-material/ShortText";
-import SubjectIcon from "@mui/icons-material/Subject";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
-import RadioButtonCheckedIcon from "@mui/icons-material/RadioButtonChecked";
-import ArrowDropDownCircleIcon from "@mui/icons-material/ArrowDropDownCircle";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import LinearScaleIcon from "@mui/icons-material/LinearScale";
+import {
+  ShortText,
+  LinearScale,
+  Subject,
+  CheckBox,
+  RadioButtonChecked,
+  ArrowDropDownCircle,
+  AccessTime,
+  CalendarToday,
+} from "@mui/icons-material";
 import { QuestionModel } from "../types/form";
 import MenuComponent from "./MenuComponent";
 
@@ -21,14 +23,14 @@ const createFormItems: {
   label: string;
   icon: ReactNode;
 }[] = [
-  { type: "SHORT", label: "Short Answer", icon: <ShortTextIcon /> },
-  { type: "LONG", label: "Long Answer", icon: <SubjectIcon /> },
-  { type: "CHECKBOX", label: "Multiple Select", icon: <CheckBoxIcon /> },
-  { type: "RADIO", label: "Single Select", icon: <RadioButtonCheckedIcon /> },
-  { type: "DROPDOWN", label: "Dropdown", icon: <ArrowDropDownCircleIcon /> },
-  { type: "TIME", label: "Time", icon: <AccessTimeIcon /> },
-  { type: "DATE", label: "Date", icon: <CalendarTodayIcon /> },
-  { type: "LINEAR", label: "Linear Scale", icon: <LinearScaleIcon /> },
+  { type: "SHORT", label: "Short Answer", icon: <ShortText /> },
+  { type: "LONG", label: "Long Answer", icon: <Subject /> },
+  { type: "CHECKBOX", label: "Multiple Select", icon: <CheckBox /> },
+  { type: "RADIO", label: "Single Select", icon: <RadioButtonChecked /> },
+  { type: "DROPDOWN", label: "Dropdown", icon: <ArrowDropDownCircle /> },
+  { type: "TIME", label: "Time", icon: <AccessTime /> },
+  { type: "DATE", label: "Date", icon: <CalendarToday /> },
+  { type: "LINEAR", label: "Linear Scale", icon: <LinearScale /> },
 ];
 
 const CreateFormMenu: React.FC<CreateFormMenuProps> = ({
