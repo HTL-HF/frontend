@@ -3,7 +3,7 @@ import { server } from "../configs/axiosConfig";
 import { ResponseModal } from "../types/response";
 import { AlertColor } from "@mui/material";
 import { StatusCodes } from "http-status-codes";
-import { showError } from "../utils/notifications";
+import { getErrorMessage } from "../utils/notifications";
 
 export const sendResponse = async (
   formId: string,
@@ -21,7 +21,7 @@ export const sendResponse = async (
         [StatusCodes.NOT_ACCEPTABLE]: err.response?.data,
       };
 
-      showError(err, statusMap, showNotification);
+      showNotification(getErrorMessage(err, statusMap), "error");
     }
   }
 };

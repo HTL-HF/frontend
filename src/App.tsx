@@ -12,6 +12,7 @@ import CreateFormPage from "./views/CreateFromPage";
 import FormPage from "./views/FormPage";
 import PageNotFoundPage from "./views/PageNotFoundPage";
 import paths from "./configs/pathsConfig";
+import FormsPage from "./views/FormsPage";
 function App() {
   const dispatch = useDispatch();
 
@@ -28,9 +29,9 @@ function App() {
         <Route path={paths.home} element={<HomePage />} />
         <Route path={paths.register} element={<RegisterPage />} />
         <Route path={paths.login} element={<LoginPage />} />
-        <Route path={paths.forms} element={<FormPage />} />
+        <Route path={paths.forms} element={<FormsPage />} />
         <Route path={paths.createForm} element={<CreateFormPage />} />
-        <Route path={paths.forms + ":id"} element={<FormPage />} />
+        <Route path={paths.forms + "/:id"} element={<FormPage />} />
 
         <Route path="*" element={<PageNotFoundPage />} />
       </Routes>

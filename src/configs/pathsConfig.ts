@@ -5,7 +5,7 @@ const paths = {
   forms: "/forms",
   createForm: "/forms/create",
   form(id: string) {
-    return this.forms + id;
+    return `${this.forms}/${id}`;
   },
 };
 
