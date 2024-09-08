@@ -16,6 +16,7 @@ import { StatusCodes } from "http-status-codes";
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { showNotification } = useNotification();
@@ -23,29 +24,31 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     try {
+      setLoading(true);
       await sendLogin(username, SHA512(password));
       const user = loadUserFromToken();
-      
+
       if (user) {
         dispatch(changeUser(user));
+        navigate(paths.forms);
       }
-
-      navigate(paths.forms);
     } catch (err) {
       const statusMap = {
         [StatusCodes.NOT_FOUND]: "Invalid username or password.",
       };
 
       showNotification(getErrorMessage(err, statusMap), "error");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (user) {
+    if (!loading && user) {
       showNotification("You are already logged in", "error");
       navigate(paths.home);
     }
-  }, [user, showNotification, navigate]);
+  }, [user, loading, showNotification, navigate]);
 
   return (
     <FormLayout title="Login" onSubmit={handleLogin} buttonText="Login">
