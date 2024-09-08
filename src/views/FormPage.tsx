@@ -51,7 +51,7 @@ const FormPage = () => {
             };
 
             showNotification(getErrorMessage(err, statusMap), "error");
-            
+
             if (err.response?.status == StatusCodes.NOT_FOUND) {
               navigator("/404");
             }
@@ -94,9 +94,20 @@ const FormPage = () => {
           }
         }
 
-        if (await sendResponse(form.id, response, showNotification)) {
+        try {
+          await sendResponse(form.id, response);
           showNotification("sent answers", "success");
           navigator("/");
+        } catch (err) {
+          if (err instanceof AxiosError) {
+            const statusMap = {
+              [StatusCodes.UNAUTHORIZED]:
+                "your Token is invalid try to logout and log back in",
+              [StatusCodes.NOT_ACCEPTABLE]: err.response?.data,
+            };
+
+            showNotification(getErrorMessage(err, statusMap), "error");
+          }
         }
       }
     };
