@@ -7,8 +7,6 @@ import SaveButton from "../components/buttons/SaveButton";
 import { useNotification } from "../hooks/notifications";
 import { sendCreateForm } from "../api/forms";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { AppState } from "../store/rootReducer";
 import paths from "../configs/pathsConfig";
 import Questions from "../components/questions/Questions";
 import { AxiosError } from "axios";
