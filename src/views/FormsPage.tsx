@@ -18,10 +18,13 @@ const FormPage = () => {
   useEffect(() => {
     const getForms = async () => {
       const forms = await sendGetForms(showNotification);
-      if (forms) setForms(forms);
-      else if (forms === undefined) {
+
+      if (!forms) {
         pageNavigator(paths.login);
+        return;
       }
+      
+      setForms(forms)
     };
     getForms();
   }, []);
