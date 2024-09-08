@@ -19,7 +19,7 @@ function App() {
     if (user) {
       dispatch(changeUser(user));
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -28,7 +28,7 @@ function App() {
         <Route path={paths.register} element={<RegisterPage />} />
         <Route path={paths.login} element={<LoginPage />} />
         <Route path={paths.forms} element={<FormPage />} />
-        <Route path={paths.register} element={<CreateFormPage />} />
+        <Route path={paths.createForm} element={<CreateFormPage />} />
       </Routes>
 
       <ToastContainer />
