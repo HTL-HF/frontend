@@ -36,19 +36,25 @@ const CreateFormPage = () => {
       navigator(paths.login);
     }
   }, [user, navigator, showNotification]);
+  
+  const getOptions = (viewType: QuestionModel["viewType"]) => {
+    switch (viewType) {
+      case "LINEAR":
+        return [0, 2];
+      case "CHECKBOX":
+      case "RADIO":
+      case "DROPDOWN":
+        return [""];
+      default:
+        return undefined;
+    }
+  };
 
   const handleAddQuestion = (viewType: QuestionModel["viewType"]) => {
     const newQuestion: QuestionModel = {
       title: "",
       required: false,
-      options:
-        viewType === "LINEAR"
-          ? [0, 2]
-          : viewType === "CHECKBOX" ||
-            viewType === "RADIO" ||
-            viewType === "DROPDOWN"
-          ? [""]
-          : undefined,
+      options: getOptions(viewType),
       type: viewType === "LINEAR" ? "number" : "string",
       viewType,
     };
