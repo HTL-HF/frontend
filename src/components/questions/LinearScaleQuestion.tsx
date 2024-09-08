@@ -14,17 +14,22 @@ const LinearScaleQuestion: React.FC<LinearScaleQuestionProps> = ({
   onChange,
   onDelete,
 }) => {
+  const [min, setMin] = useState<number>(Number(question.options![0]));
+  const [max, setMax] = useState<number>(Number(question.options![question.options!.length - 1]));
+
   const generateScale = (min: number, max: number) =>
     Array.from({ length: max - min + 1 }, (_, i) => i + min);
-  
-  const [min, setMin] = useState<number>(Number(question.options![0]));
-  const [max, setMax] = useState<number>(
-    Number(question.options![question.options!.length - 1])
-  );
 
   useEffect(() => {
     onChange({ ...question, options: generateScale(min, max) });
-  }, [min, max]);
+  }, [min, max, onChange,question]);
+
+  const renderScaleOption = (options: number[]) =>
+    options.map((option) => (
+      <MenuItem key={option} value={option}>
+        {option}
+      </MenuItem>
+    ));
 
   return (
     <QuestionBase question={question} onChange={onChange} onDelete={onDelete}>
@@ -32,28 +37,20 @@ const LinearScaleQuestion: React.FC<LinearScaleQuestionProps> = ({
         <Typography>Scale from</Typography>
         <Select
           value={String(min)}
-          onChange={(event) => setMin(Number(event.target.value))}
-          style={{ margin: "0 10px" }}
+          onChange={(e) => setMin(Number(e.target.value))}
+          sx={{ mx: 1 }}
           required
         >
-          {Array.from([0, 1]).map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
+          {renderScaleOption([0, 1])}
         </Select>
         <Typography>to</Typography>
         <Select
           value={String(max)}
-          onChange={(event) => setMax(Number(event.target.value))}
-          style={{ margin: "0 10px" }}
+          onChange={(e) => setMax(Number(e.target.value))}
+          sx={{ mx: 1 }}
           required
         >
-          {Array.from({ length: 9 }, (_, i) => i + 2).map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
+          {renderScaleOption(Array.from({ length: 9 }, (_, i) => i + 2))}
         </Select>
       </Box>
     </QuestionBase>
