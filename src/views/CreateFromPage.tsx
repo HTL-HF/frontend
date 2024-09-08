@@ -1,16 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, TextField, Box } from "@mui/material";
 import CreateFormMenu from "../components/CreateFormMenu";
-import { FormModel, questionComponentMap, QuestionModel } from "../types/form";
+import { FormModel, QuestionModel } from "../types/form";
 import AddButton from "../components/buttons/AddButton";
 import SaveButton from "../components/buttons/SaveButton";
 import { useNotification } from "../hooks/notifications";
 import { sendCreateForm } from "../api/forms";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { AppState } from "../store/rootReducer";
+import paths from "../configs/pathsConfig";
+import Questions from "../components/questions/Questions";
+import { AxiosError } from "axios";
+import { StatusCodes } from "http-status-codes";
+import { getErrorMessage } from "../utils/notifications";
 
 const CreateFormPage = () => {
   const { showNotification } = useNotification();
   const navigator = useNavigate();
+  const user = useSelector((state: AppState) => state.user);
   const [form, setForm] = useState<FormModel>({
     title: "",
     questions: [],
@@ -25,19 +33,31 @@ const CreateFormPage = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+  useEffect(() => {
+    if (!user) {
+      showNotification("You need to login first", "error");
+      navigator(paths.login);
+    }
+  }, [user, navigator, showNotification]);
+
+  const getOptions = (viewType: QuestionModel["viewType"]) => {
+    switch (viewType) {
+      case "LINEAR":
+        return [0, 2];
+      case "CHECKBOX":
+      case "RADIO":
+      case "DROPDOWN":
+        return [""];
+      default:
+        return undefined;
+    }
+  };
 
   const handleAddQuestion = (viewType: QuestionModel["viewType"]) => {
     const newQuestion: QuestionModel = {
       title: "",
       required: false,
-      options:
-        viewType === "LINEAR"
-          ? [0, 2]
-          : viewType === "CHECKBOX" ||
-            viewType === "RADIO" ||
-            viewType === "DROPDOWN"
-          ? [""]
-          : undefined,
+      options: getOptions(viewType),
       type: viewType === "LINEAR" ? "number" : "string",
       viewType,
     };
@@ -68,17 +88,27 @@ const CreateFormPage = () => {
       if (
         !form.title ||
         form.questions.some(
-          (q) =>
-            !q.title ||
-            (q.options && q.options.some((option) => !option && option !== 0))
+          (question) =>
+            !question.title ||
+            (question.options &&
+              question.options.some((option) => !option && option !== 0))
         )
       ) {
         showNotification("All required fields must be filled!", "error");
         return;
       }
+      try {
+        await sendCreateForm(form);
+        navigator(paths.forms);
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          const statusMap = {
+            [StatusCodes.UNAUTHORIZED]: "You need to login",
+            [StatusCodes.NOT_ACCEPTABLE]: err.response?.data,
+          };
 
-      if (await sendCreateForm(form, showNotification)) {
-        navigator("/forms");
+          showNotification(getErrorMessage(err, statusMap), "error");
+        }
       }
     };
 
@@ -119,20 +149,11 @@ const CreateFormPage = () => {
         }
       />
 
-      {form.questions.map((question, index) => {
-        const QuestionComponent = questionComponentMap[question.viewType];
-
-        return (
-          <QuestionComponent
-            key={index}
-            question={question}
-            onChange={(updatedQuestion: QuestionModel) =>
-              handleQuestionChange(index, updatedQuestion)
-            }
-            onDelete={() => handleQuestionDelete(index)}
-          />
-        );
-      })}
+      <Questions
+        questions={form.questions}
+        handleQuestionChange={handleQuestionChange}
+        handleQuestionDelete={handleQuestionDelete}
+      />
 
       <AddButton onClick={handleAddButtonClick} />
 

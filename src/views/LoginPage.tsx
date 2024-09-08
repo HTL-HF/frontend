@@ -9,31 +9,46 @@ import FormLayout from "../components/FormLayout";
 import FormField from "../components/FormField";
 import { useNotification } from "../hooks/notifications";
 import { AppState } from "../store/rootReducer";
+import paths from "../configs/pathsConfig";
+import { getErrorMessage } from "../utils/notifications";
+import { StatusCodes } from "http-status-codes";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { showNotification } = useNotification();
   const user = useSelector((state: AppState) => state.user);
 
   const handleLogin = async () => {
-    if (await sendLogin(username, SHA512(password), showNotification)) {
+    try {
+      setLoading(true);
+      await sendLogin(username, SHA512(password));
       const user = loadUserFromToken();
+
       if (user) {
         dispatch(changeUser(user));
+        navigate(paths.forms);
       }
-      navigate("/forms");
+    } catch (err) {
+      const statusMap = {
+        [StatusCodes.NOT_FOUND]: "Invalid username or password.",
+      };
+
+      showNotification(getErrorMessage(err, statusMap), "error");
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (user) {
+    if (!loading && user) {
       showNotification("You are already logged in", "error");
-      navigate("/");
+      navigate(paths.home);
     }
-  }, []);
+  }, [user, loading, showNotification, navigate]);
 
   return (
     <FormLayout title="Login" onSubmit={handleLogin} buttonText="Login">

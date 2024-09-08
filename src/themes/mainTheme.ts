@@ -35,10 +35,15 @@ const theme = createTheme({
     borderRadius: 8,
   },
   components: {
-    MuiButton: {
+    MuiFab: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          position: "fixed",
+          backgroundColor: "#1976d2",
+          color: "#ffffff",
+          "&:hover": {
+            backgroundColor: "#004ba0",
+          },
         },
       },
     },
@@ -57,7 +62,6 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           marginBottom: "16px", 
-          borderRadius: "8px",
           marginTop:"16px"
         },
       },
