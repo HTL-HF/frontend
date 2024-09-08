@@ -14,11 +14,9 @@ const LinearScaleQuestion: React.FC<LinearScaleQuestionProps> = ({
   onChange,
   onDelete,
 }) => {
-  const generateScale = (min: number, max: number) => {
-    const scale = Array.from({ length: max - min + 1 }, (_, i) => i + min);
-    return scale;
-  };
-  console.log(question.options);
+  const generateScale = (min: number, max: number) =>
+    Array.from({ length: max - min + 1 }, (_, i) => i + min);
+  
   const [min, setMin] = useState<number>(Number(question.options![0]));
   const [max, setMax] = useState<number>(
     Number(question.options![question.options!.length - 1])
