@@ -35,6 +35,18 @@ const theme = createTheme({
     borderRadius: 8,
   },
   components: {
+    MuiFab: {
+      styleOverrides: {
+        root: {
+          position: "fixed",
+          backgroundColor: "#1976d2",
+          color: "#ffffff",
+          "&:hover": {
+            backgroundColor: "#004ba0",
+          },
+        },
+      },
+    },
     MuiMenuItem: {
       styleOverrides: {
         root: {
