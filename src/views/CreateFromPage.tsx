@@ -31,7 +31,7 @@ const CreateFormPage = () => {
     setAnchorEl(null);
   };
   useEffect(() => {
-    if (user) {
+    if (!user) {
       showNotification("You need to login first", "error");
       navigator(paths.login);
     }
