@@ -78,9 +78,9 @@ const CreateFormPage = () => {
       if (
         !form.title ||
         form.questions.some(
-          (q) =>
-            !q.title ||
-            (q.options && q.options.some((option) => !option && option !== 0))
+          (question) =>
+            !question.title ||
+            (question.options && question.options.some((option) => !option && option !== 0))
         )
       ) {
         showNotification("All required fields must be filled!", "error");
