@@ -18,19 +18,19 @@ interface CreateFormMenuProps {
   onAddQuestion: (viewType: QuestionModel["viewType"]) => void;
 }
 
-const createFormItems: {
-  type: QuestionModel["viewType"];
+const formQuestions: {
+  viewType: QuestionModel["viewType"];
   label: string;
   icon: ReactNode;
 }[] = [
-  { type: "SHORT", label: "Short Answer", icon: <ShortText /> },
-  { type: "LONG", label: "Long Answer", icon: <Subject /> },
-  { type: "CHECKBOX", label: "Multiple Select", icon: <CheckBox /> },
-  { type: "RADIO", label: "Single Select", icon: <RadioButtonChecked /> },
-  { type: "DROPDOWN", label: "Dropdown", icon: <ArrowDropDownCircle /> },
-  { type: "TIME", label: "Time", icon: <AccessTime /> },
-  { type: "DATE", label: "Date", icon: <CalendarToday /> },
-  { type: "LINEAR", label: "Linear Scale", icon: <LinearScale /> },
+  { viewType: "SHORT", label: "Short Answer", icon: <ShortText /> },
+  { viewType: "LONG", label: "Long Answer", icon: <Subject /> },
+  { viewType: "CHECKBOX", label: "Multiple Select", icon: <CheckBox /> },
+  { viewType: "RADIO", label: "Single Select", icon: <RadioButtonChecked /> },
+  { viewType: "DROPDOWN", label: "Dropdown", icon: <ArrowDropDownCircle /> },
+  { viewType: "TIME", label: "Time", icon: <AccessTime /> },
+  { viewType: "DATE", label: "Date", icon: <CalendarToday /> },
+  { viewType: "LINEAR", label: "Linear Scale", icon: <LinearScale /> },
 ];
 
 const CreateFormMenu: React.FC<CreateFormMenuProps> = ({
@@ -43,7 +43,7 @@ const CreateFormMenu: React.FC<CreateFormMenuProps> = ({
       anchorEl={anchorEl}
       open={Boolean(anchorEl)}
       onClose={onClose}
-      menuItems={createFormItems.map(({ label, type, icon }) => {
+      menuItems={formQuestions.map(({ label, viewType: type, icon }) => {
         return { label, icon, action: () => onAddQuestion(type) };
       })}
     />
