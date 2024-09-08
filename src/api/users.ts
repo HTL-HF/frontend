@@ -21,8 +21,7 @@ export const sendRegister = async (
         username,
         email,
         password,
-      },
-      { withCredentials: true }
+      }
     );
 
     return true;
@@ -49,8 +48,7 @@ export const sendLogin = async (
       {
         username,
         password,
-      },
-      { withCredentials: true }
+      }
     );
 
     return true;
@@ -70,7 +68,7 @@ export const sendGetForms = async (
   showNotification: (message: string, severity: AlertColor) => void
 ) => {
   try {
-    return (await server.get("/users/forms", { withCredentials: true })).data;
+    return (await server.get("/users/forms")).data;
   } catch (err) {
     if (err instanceof AxiosError) {
       const statusMap = {

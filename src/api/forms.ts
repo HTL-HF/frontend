@@ -11,7 +11,7 @@ export const sendDeleteForm = async (
 ) => {
   try {
     const response = (
-      await server.delete(`/forms/${id}`, { withCredentials: true })
+      await server.delete(`/forms/${id}`)
     ).data;
 
     showNotification("deleted form successfully", "success");
@@ -32,7 +32,7 @@ export const sendCreateForm = async (
   showNotification: (message: string, severity: AlertColor) => void
 ) => {
   try {
-    await server.post("/forms", form, { withCredentials: true });
+    await server.post("/forms", form);
     return true;
   } catch (err) {
     if (err instanceof AxiosError) {
