@@ -7,6 +7,7 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import React from "react";
 import MenuComponent from "./MenuComponent";
 import { useNavigate } from "react-router-dom";
+import { BarChart } from "@mui/icons-material";
 
 interface FormItemProps {
   form: { id: string; title: string };
@@ -50,6 +51,11 @@ const FormItem: React.FC<FormItemProps> = ({
       },
     },
     { label: "Share", icon: <ShareIcon />, action: onShare },
+    {
+      label: "Responses",
+      icon: <BarChart />,
+      action: () => navigator(`/forms/${form.id}/responses`),
+    },
   ];
 
   const open = Boolean(anchorEl && selectedFormId === form.id);
