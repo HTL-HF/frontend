@@ -1,35 +1,20 @@
-import React from "react";
-import {
-  AppBar,
-  Toolbar,
-  Button,
-  IconButton,
-  Menu,
-  MenuItem,
-  Avatar,
-  Box,
-} from "@mui/material";
-import { useState } from "react";
+import { AppBar, Toolbar, Button, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import Cookies from "js-cookie";
 import { AppState } from "../store/rootReducer";
 import { changeUser } from "../types/actions";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const user = useSelector((state: AppState) => state.user);
 
-  const handleMenuOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
   const logout = () => {
+    Cookies.remove("token"); 
+
     dispatch(changeUser(null));
+
     navigate("/");
   };
 
