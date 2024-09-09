@@ -20,5 +20,6 @@ COPY vite.config.ts vite.config.ts
 RUN npm clean-install
 
 EXPOSE $PORT
+RUN npm run build
 
 ENTRYPOINT ["npm", "run", "preview"]
