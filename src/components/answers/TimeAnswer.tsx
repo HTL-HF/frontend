@@ -20,7 +20,7 @@ const TimeAnswer: React.FC<TimeAnswerProps> = ({
     >
       <TimePicker
         value={answer ? moment(answer, "hh:mm a") : null}
-        onChange={(event) => onChange(event?.format("hh:mm a") || "")}
+        onChange={(event) => onChange!(event?.format("hh:mm a") || "")}
         disabled={disable}
       />
     </AnswerBase>

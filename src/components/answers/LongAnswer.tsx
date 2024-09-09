@@ -33,7 +33,7 @@ const LongAnswer: React.FC<LongAnswerProps> = ({
           },
         }}
         onChange={(e) => {
-          onChange(
+          onChange!(
             question.type === "number" ? Number(e.target.value) : e.target.value
           );
         }}

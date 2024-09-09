@@ -16,7 +16,7 @@ const CheckboxAnswer: React.FC<CheckboxAnswerProps> = ({
   onChange,
 }) => {
   useEffect(() => {
-    if (!Array.isArray(answer)) {
+    if (!Array.isArray(answer) && onChange) {
       onChange([]);
     }
   }, [answer,onChange]);
@@ -46,9 +46,9 @@ const CheckboxAnswer: React.FC<CheckboxAnswerProps> = ({
                           event.target.checked &&
                           typeof option === "string"
                         ) {
-                          onChange(answer.concat(option));
+                          onChange!(answer.concat(option));
                         } else {
-                          onChange(
+                          onChange!(
                             answer.filter((answer) => answer !== option)
                           );
                         }

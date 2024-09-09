@@ -22,7 +22,7 @@ const ShortAnswer: React.FC<AnswerShortProps> = ({
         disabled={disable}
         value={answer !== undefined ? answer : ""}
         onChange={(e) => {
-          onChange(
+          onChange!(
             question.type === "number" ? Number(e.target.value) : e.target.value
           );
         }}

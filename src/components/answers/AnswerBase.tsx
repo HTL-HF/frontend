@@ -15,7 +15,7 @@ export interface AnswerBaseProps {
   children?: ReactNode;
   answer: number | string | string[];
   disable: boolean;
-  onChange: (value: string | number | string[]) => void;
+  onChange?: (value: string | number | string[]) => void;
 }
 
 const AnswerBase: React.FC<AnswerBaseProps> = ({ question, children }) => {

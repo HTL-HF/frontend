@@ -20,7 +20,7 @@ const DateAnswer: React.FC<DateAnswerProps> = ({
     >
       <DatePicker
         value={answer ? moment(answer) : null}
-        onChange={(event) => onChange(event?.toISOString() || "")}
+        onChange={(event) => onChange!(event?.toISOString() || "")}
         disabled={disable}
       />
     </AnswerBase>

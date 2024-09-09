@@ -11,10 +11,10 @@ const DropdownAnswer: React.FC<DropdownAnswerProps> = ({
   onChange,
 }) => {
   useEffect(() => {
-    if (!answer && question.options) {
+    if (!answer && question.options && onChange) {
       onChange(question.options[0]);
     }
-  }, [answer,onChange,question.options]);
+  }, [answer, onChange, question.options]);
 
   return (
     <AnswerBase
@@ -29,7 +29,7 @@ const DropdownAnswer: React.FC<DropdownAnswerProps> = ({
           required={question.required}
           disabled={disable}
           value={answer ? answer : question.options[0]}
-          onChange={(event) => onChange(event.target.value)}
+          onChange={(event) => onChange!(event.target.value)}
         >
           {question.options &&
             question.options.map((option, index) => (
