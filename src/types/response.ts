@@ -6,3 +6,8 @@ export interface ResponseModal {
   submittedAt: number;
   answers: AnswerModal[];
 }
+
+export interface ResponsesResponseModal extends ResponseModal {
+  id: string;
+  userId?: string;
+}
