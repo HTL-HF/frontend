@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const server = axios.create({
-  baseURL: import.meta.env.BACKEND_BASE_URL || "http://localhost:3000",
+  baseURL: import.meta.env.VITE_BACKEND_BASE_URL || "http://localhost:3000",
 });
