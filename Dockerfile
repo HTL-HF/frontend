@@ -1,0 +1,17 @@
+FROM node:20.13.1-bullseye
+
+ARG PORT_ARG
+ARG BACKEND_BASE_URL_ARG
+
+ENV PORT=$PORT_ARG
+ENV BACKEND_BASE_URL=$BACKEND_BASE_URL_ARG
+
+WORKDIR /
+
+COPY . .
+
+RUN npm clean-install
+
+EXPOSE $PORT
+
+ENTRYPOINT ["npm", "run", "preview"]
