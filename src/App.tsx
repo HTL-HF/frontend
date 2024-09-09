@@ -13,6 +13,7 @@ import CreateFormPage from "./views/CreateFromPage";
 import FormPage from "./views/FormPage";
 import PageNotFoundPage from "./views/PageNotFoundPage";
 import Navbar from "./components/Navbar";
+import ResponsesPage from "./views/ResponsesPage";
 function App() {
   const dispatch = useDispatch();
 
@@ -33,7 +34,7 @@ function App() {
         <Route path="/forms" element={<FormsPage />} />
         <Route path="/forms/create" element={<CreateFormPage />} />
         <Route path="/forms/:id" element={<FormPage />} />
-
+        <Route path="/forms/:id/responses" element={<ResponsesPage />} />
         <Route path="*" element={<PageNotFoundPage />} />
       </Routes>
 
