@@ -25,3 +25,4 @@ EXPOSE $PORT
 RUN npm run build
 
 ENTRYPOINT ["npm", "run", "preview"]
+# ENTRYPOINT [ "npm", "run", "dev" ]
