@@ -1,5 +1,8 @@
 import axios from "axios";
 
+const IP = import.meta.env.VITE_BACKEND_IP || "localhost";
+const PORT = import.meta.env.VITE_BACKEND_PORT || 3000;
+
 export const server = axios.create({
-  baseURL: import.meta.env.VITE_BACKEND_BASE_URL || "http://localhost:3000",
+  baseURL: `http://${IP}:${PORT}`,
 });
