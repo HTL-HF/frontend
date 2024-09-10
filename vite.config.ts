@@ -11,5 +11,10 @@ export default defineConfig({
     watch: {
       usePolling: true
     }
+  },
+  preview:{
+    host: true,  
+    port: Number(process.env.VITE_PORT) || 5173, 
+    strictPort: true
   }
 });
