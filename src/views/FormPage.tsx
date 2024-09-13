@@ -13,6 +13,7 @@ import { StatusCodes } from "http-status-codes";
 import { getErrorMessage } from "../utils/notifications";
 import QuestionBox from "../components/questions/QuestionBox";
 import Answers from "../components/answers/Answers";
+import paths from "../configs/pathsConfig";
 
 const StyledBox = styled(QuestionBox)(() => ({
   position: "relative",
@@ -33,12 +34,12 @@ const FormPage = () => {
   useEffect(() => {
     const getForm = async (id: string | undefined) => {
       if (!id) {
-        navigator("/404");
+        navigator(paths.notFound);
       } else {
         try {
           const form = await sendGetForm(id);
           if (!form) {
-            navigator("/404");
+            navigator(paths.notFound);
           } else {
             setForm(form);
           }
@@ -51,7 +52,7 @@ const FormPage = () => {
             showNotification(getErrorMessage(err, statusMap), "error");
 
             if (err.response?.status == StatusCodes.NOT_FOUND) {
-              navigator("/404");
+              navigator(paths.notFound);
             }
           }
         }
@@ -126,7 +127,11 @@ const FormPage = () => {
               <Typography variant="body1">{form.description}</Typography>
             )}
           </StyledBox>
-          <Answers questions={form.questions} answers={answers} setAnswers={setAnswers}/>
+          <Answers
+            questions={form.questions}
+            answers={answers}
+            setAnswers={setAnswers}
+          />
           <SaveButton onClick={handleSaveResponse} />
         </StyledBox>
       )}
