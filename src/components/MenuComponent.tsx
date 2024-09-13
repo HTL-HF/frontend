@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react";
-import { Menu, MenuItem } from "@mui/material";
-
+import { ListItemIcon, ListItemText, Menu, MenuItem } from "@mui/material";
 interface MenuComponentProps {
   anchorEl: HTMLElement | null;
   open: boolean;
@@ -18,9 +17,8 @@ const MenuComponent: React.FC<MenuComponentProps> = ({
     <Menu anchorEl={anchorEl} open={open} onClose={onClose}>
       {menuItems.map((item, index) => (
         <MenuItem key={index} onClick={item.action}>
-          {item.icon}
-          <span style={{ marginRight: 8 }} />
-          {item.label}
+          <ListItemIcon>{item.icon}</ListItemIcon>
+          <ListItemText primary={item.label} />
         </MenuItem>
       ))}
     </Menu>

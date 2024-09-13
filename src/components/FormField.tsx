@@ -24,7 +24,7 @@ const FormField: React.FC<FormFieldProps> = ({
         type={type}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        required={required ? true : false}
+        required={required}
       />
     </FormControl>
   );

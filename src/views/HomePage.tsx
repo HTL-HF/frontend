@@ -2,6 +2,7 @@ import { Container, Typography, Button, Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { AppState } from "../store/rootReducer";
+import paths from "../configs/pathsConfig";
 
 const HomePage = () => {
   const user = useSelector((state: AppState) => state.user);
@@ -21,7 +22,7 @@ const HomePage = () => {
           size="large"
           style={{ marginRight: "20px", width: "150px" }}
           component={Link}
-          to={!user ? "/login" : "/forms"}
+          to={!user ? paths.login : paths.forms}
         >
           {!user ? <div>login</div> : <div>forms</div>}
         </Button>
@@ -31,7 +32,7 @@ const HomePage = () => {
           size="large"
           style={{ width: "150px" }}
           component={Link}
-          to={!user?"/register":"forms/create"}
+          to={!user ? paths.register : paths.createForm}
         >
           {!user ? <div>register</div> : <div>create form</div>}
         </Button>
