@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { sendGetForm } from "../api/forms";
 import { useNotification } from "../hooks/notifications";
 import { answerComponentMap, FormAnswerModel } from "../types/form";
-import { Container, Typography, Box, styled } from "@mui/material";
+import { Container, Typography, styled } from "@mui/material";
 import SaveButton from "../components/buttons/SaveButton";
 import { ResponseModal } from "../types/response";
 import moment from "moment";
@@ -11,12 +11,9 @@ import { sendResponse } from "../api/responses";
 import { AxiosError } from "axios";
 import { StatusCodes } from "http-status-codes";
 import { getErrorMessage } from "../utils/notifications";
+import QuestionBox from "../components/questions/QuestionBox";
 
-const StyledBox = styled(Box)(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  borderRadius: theme.shape.borderRadius,
-  padding: theme.spacing(2),
-  marginBottom: theme.spacing(2),
+const StyledBox = styled(QuestionBox)(() => ({
   position: "relative",
   wordWrap: "break-word",
   overflowWrap: "break-word",
