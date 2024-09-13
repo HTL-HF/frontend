@@ -6,17 +6,11 @@ import {
   Typography,
   FormControlLabel,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
 import { QuestionModel } from "../../types/form";
 import DeleteButton from "../buttons/DeleteButton";
+import QuestionBox from "./QuestionBox";
 
-const QuestionBox = styled(Box)(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  borderRadius: theme.shape.borderRadius,
-  padding: theme.spacing(2),
-  marginBottom: theme.spacing(2),
-  position: "relative",
-}));
+
 
 interface QuestionBaseProps {
   question: QuestionModel;

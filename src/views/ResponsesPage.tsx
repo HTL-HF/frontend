@@ -4,10 +4,14 @@ import { FormAnswerModel } from "../types/form";
 import { useNotification } from "../hooks/notifications";
 import { sendGetForm } from "../api/forms";
 import { sendDeleteResponse, sendGetResponses } from "../api/responses";
-import { answerComponentMap } from "../types/form";
 import { Container, Typography, Box, styled } from "@mui/material";
 import { ResponsesResponseModal } from "../types/response";
 import NavigatorBar from "../components/NavigatorBar";
+import paths from "../configs/pathsConfig";
+import { StatusCodes } from "http-status-codes";
+import { AxiosError } from "axios";
+import { getErrorMessage } from "../utils/notifications";
+import Responses from "../components/Responses";
 const StyledBox = styled(Box)(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
   borderRadius: theme.shape.borderRadius,
@@ -35,13 +39,27 @@ const ResponsesPage = () => {
   useEffect(() => {
     const getForm = async (id: string | undefined) => {
       if (!id) {
-        navigator("/404");
+        navigator(paths.notFound);
       } else {
-        const form = await sendGetForm(id, showNotification, navigator);
-        if (!form) {
-          navigator("/login");
-        } else {
-          setForm(form);
+        try {
+          const form = await sendGetForm(id);
+          if (!form) {
+            navigator(paths.notFound);
+          } else {
+            setForm(form);
+          }
+        } catch (err) {
+          if (err instanceof AxiosError) {
+            const statusMap = {
+              [StatusCodes.UNAUTHORIZED]: "You need to login",
+            };
+
+            showNotification(getErrorMessage(err, statusMap), "error");
+
+            if (err.response?.status == StatusCodes.NOT_FOUND) {
+              navigator(paths.notFound);
+            }
+          }
         }
       }
     };
@@ -51,18 +69,28 @@ const ResponsesPage = () => {
   useEffect(() => {
     const getResponses = async (id: string | undefined) => {
       if (!id) {
-        navigator("/404");
+        navigator(paths.notFound);
       } else {
-        const responses = await sendGetResponses(
-          id,
-          navigator,
-          showNotification
-        );
+        try {
+          const responses = await sendGetResponses(id);
 
-        if (!responses) {
-          navigator("/login");
-        } else {
           setResponses(responses);
+        } catch (err) {
+          if (err instanceof AxiosError) {
+            const statusMap = {
+              [StatusCodes.UNAUTHORIZED]: "You need to login!",
+              [StatusCodes.NOT_FOUND]: "No such form",
+              [StatusCodes.FORBIDDEN]: "Your not the owner of the form!",
+            };
+
+            showNotification(getErrorMessage(err, statusMap), "error");
+
+            if (err.response?.status === StatusCodes.NOT_FOUND) {
+              navigator(paths.forms);
+            } else if (err.response?.status === StatusCodes.FORBIDDEN) {
+              navigator(paths.home);
+            }
+          }
         }
       }
     };
@@ -71,21 +99,28 @@ const ResponsesPage = () => {
 
   const handleDeleteResponse = async () => {
     if (id) {
-      if (
-        await sendDeleteResponse(
-          id,
-          currentResponse.id,
-          navigator,
-          showNotification
-        )
-      ) {
+      try {
+        await sendDeleteResponse(id, currentResponse.id);
         setResponses(
           responses.filter((response) => response.id !== currentResponse.id)
         );
-        console.log(responseIndex);
         setResponseIndex(responseIndex > 1 ? responseIndex - 1 : 1);
 
         showNotification("deleted response successfully", "success");
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          const statusMap = {
+            [StatusCodes.UNAUTHORIZED]: "You need to login!",
+            [StatusCodes.FORBIDDEN]: "You are not owner of this form",
+            [StatusCodes.NOT_FOUND]: "No such form or response",
+          };
+
+          showNotification(getErrorMessage(err, statusMap), "error");
+
+          if (err.response?.status === StatusCodes.NOT_FOUND) {
+            navigator(paths.forms);
+          }
+        }
       }
     }
   };
@@ -111,20 +146,10 @@ const ResponsesPage = () => {
             endIndex={responses.length}
             currentIndex={responseIndex}
           />
-          {form.questions.map((question) => {
-            const AnswerComponent = answerComponentMap[question.viewType];
-            const answerFromResponse = currentResponse.answers.find(
-              (answer) => answer.questionId === question.id
-            );
-            return answerFromResponse ? (
-              <AnswerComponent
-                disable={true}
-                answer={answerFromResponse.answer}
-                question={question}
-                key={question.id}
-              />
-            ) : null;
-          })}
+          <Responses
+            questions={form.questions}
+            answers={currentResponse.answers}
+          />
         </StyledBox>
       )}
     </Container>

@@ -1,14 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SHA512 } from "../utils/encryption";
 import { loadUserFromToken } from "../utils/token";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { changeUser } from "../types/actions";
 import FormLayout from "../components/FormLayout";
 import FormField from "../components/FormField";
 import { useNotification } from "../hooks/notifications";
+import paths from "../configs/pathsConfig";
+import { getErrorMessage } from "../utils/notifications";
+import { StatusCodes } from "http-status-codes";
 import { sendRegister } from "../api/users";
-import { AppState } from "../store/rootReducer";
+import { SHA512 } from "../utils/encryption";
 
 const RegisterPage = () => {
   const [firstName, setFirstName] = useState("");
@@ -19,31 +21,29 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { showNotification } = useNotification();
-  const user = useSelector((state: AppState) => state.user);
-
-  useEffect(() => {
-    if (user) {
-      showNotification("you are already logged in", "error");
-      navigate("/");
-    }
-  }, []);
 
   const register = async () => {
-    if (
+    try {
       await sendRegister(
         firstName,
         lastName,
         username,
         email,
-        SHA512(password),
-        showNotification
-      )
-    ) {
+        SHA512(password)
+      );
       const user = loadUserFromToken();
+
       if (user) {
         dispatch(changeUser(user));
       }
-      navigate("/forms");
+
+      navigate(paths.createForm);
+    } catch (err) {
+      const statusMap = {
+        [StatusCodes.CONFLICT]: "This email or username is already taken.",
+      };
+
+      showNotification(getErrorMessage(err, statusMap), "error");
     }
   };
 
