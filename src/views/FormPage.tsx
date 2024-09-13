@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { sendGetForm } from "../api/forms";
 import { useNotification } from "../hooks/notifications";
-import { answerComponentMap, FormAnswerModel } from "../types/form";
+import { FormAnswerModel } from "../types/form";
 import { Container, Typography, styled } from "@mui/material";
 import SaveButton from "../components/buttons/SaveButton";
 import { ResponseModal } from "../types/response";
@@ -12,6 +12,7 @@ import { AxiosError } from "axios";
 import { StatusCodes } from "http-status-codes";
 import { getErrorMessage } from "../utils/notifications";
 import QuestionBox from "../components/questions/QuestionBox";
+import Answers from "../components/answers/Answers";
 
 const StyledBox = styled(QuestionBox)(() => ({
   position: "relative",
@@ -125,22 +126,7 @@ const FormPage = () => {
               <Typography variant="body1">{form.description}</Typography>
             )}
           </StyledBox>
-          {form.questions.map((question) => {
-            const AnswerComponent = answerComponentMap[question.viewType];
-            return (
-              <AnswerComponent
-                disable={false}
-                answer={answers[question.id]}
-                onChange={(value) => {
-                  const newAnswers = { ...answers };
-                  newAnswers[question.id] = value;
-                  setAnswers(newAnswers);
-                }}
-                question={question}
-                key={question.id}
-              />
-            );
-          })}
+          <Answers questions={form.questions} answers={answers} setAnswers={setAnswers}/>
           <SaveButton onClick={handleSaveResponse} />
         </StyledBox>
       )}
