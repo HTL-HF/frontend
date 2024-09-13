@@ -6,6 +6,9 @@ import { sendGetForms } from "../api/users";
 import { sendDeleteForm } from "../api/forms";
 import AddButton from "../components/buttons/AddButton";
 import { useNavigate } from "react-router-dom";
+import paths from "../configs/pathsConfig";
+import { StatusCodes } from "http-status-codes";
+import { getErrorMessage } from "../utils/notifications";
 
 const FormsPage = () => {
   const [forms, setForms] = useState<{ id: string; title: string }[]>([]);
@@ -16,14 +19,19 @@ const FormsPage = () => {
 
   useEffect(() => {
     const getForms = async () => {
-      const forms = await sendGetForms(showNotification);
-      if (forms) setForms(forms);
-      else if (forms === undefined) {
-        pageNavigator("/login");
+      try {
+        setForms(await sendGetForms());
+      } catch (err) {
+        const statusMap = {
+          [StatusCodes.UNAUTHORIZED]: "You need to log in to access this.",
+        };
+
+        showNotification(getErrorMessage(err, statusMap), "error");
+        pageNavigator(paths.login);
       }
     };
     getForms();
-  }, []);
+  }, [pageNavigator, showNotification]);
 
   const handleMenuClick = (
     event: React.MouseEvent<HTMLElement>,
@@ -43,20 +51,30 @@ const FormsPage = () => {
     const deleteFromServerHandler = async () => {
       if (selectedFormId !== null) {
         setForms(forms.filter((form) => form.id !== selectedFormId));
-        await sendDeleteForm(selectedFormId, showNotification);
-        handleClose();
+        try {
+          await sendDeleteForm(selectedFormId);
+          showNotification("deleted form successfully", "success");
+
+          handleClose();
+        } catch (err) {
+          const statusMap = {
+            [StatusCodes.UNAUTHORIZED]: "You need to login",
+          };
+          showNotification(getErrorMessage(err, statusMap), "error");
+        }
       }
     };
     deleteFromServerHandler();
   };
 
   const handleShare = () => {
-    navigator.clipboard.writeText(
-      `${window.location.origin}/forms/${selectedFormId}`
-    );
+    if (selectedFormId) {
+      navigator.clipboard.writeText(
+        `${window.location.origin}${paths.form(selectedFormId)}`
+      );
 
-    showNotification("copied link to your clipboard", "success");
-
+      showNotification("copied link to your clipboard", "success");
+    }
     handleClose();
   };
 
@@ -82,7 +100,7 @@ const FormsPage = () => {
           ))}
         </Grid>
       </Container>
-      <AddButton onClick={() => pageNavigator("/forms/create")} />
+      <AddButton onClick={() => pageNavigator(paths.createForm)} />
     </>
   );
 };

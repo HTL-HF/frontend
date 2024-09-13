@@ -1,14 +1,7 @@
-import { Box, FormControl, styled, Typography } from "@mui/material";
+import { FormControl, Typography } from "@mui/material";
 import React, { ReactNode } from "react";
 import { QuestionAnsweringModal } from "../../types/form";
-
-const AnswerBox = styled(Box)(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  borderRadius: theme.shape.borderRadius,
-  padding: theme.spacing(2),
-  marginBottom: theme.spacing(2),
-  position: "relative",
-}));
+import QuestionBox from "../questions/QuestionBox";
 
 export interface AnswerBaseProps {
   question: QuestionAnsweringModal;
@@ -20,7 +13,7 @@ export interface AnswerBaseProps {
 
 const AnswerBase: React.FC<AnswerBaseProps> = ({ question, children }) => {
   return (
-    <AnswerBox>
+    <QuestionBox>
       <Typography variant="h5" marginBottom="16px">
         {question.title} {question.required ? "*" : ""}
       </Typography>
@@ -30,7 +23,7 @@ const AnswerBase: React.FC<AnswerBaseProps> = ({ question, children }) => {
         </Typography>
       )}
       <FormControl>{children}</FormControl>
-    </AnswerBox>
+    </QuestionBox>
   );
 };
 

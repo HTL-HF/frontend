@@ -2,18 +2,19 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { sendGetForm } from "../api/forms";
 import { useNotification } from "../hooks/notifications";
-import { answerComponentMap, FormAnswerModel } from "../types/form";
-import { Container, Typography, Box, styled } from "@mui/material";
+import { FormAnswerModel } from "../types/form";
+import { Container, Typography, styled } from "@mui/material";
 import SaveButton from "../components/buttons/SaveButton";
 import { ResponseModal } from "../types/response";
 import moment from "moment";
 import { sendResponse } from "../api/responses";
+import { AxiosError } from "axios";
+import { StatusCodes } from "http-status-codes";
+import { getErrorMessage } from "../utils/notifications";
+import QuestionBox from "../components/questions/QuestionBox";
+import Answers from "../components/answers/Answers";
 
-const StyledBox = styled(Box)(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  borderRadius: theme.shape.borderRadius,
-  padding: theme.spacing(2),
-  marginBottom: theme.spacing(2),
+const StyledBox = styled(QuestionBox)(() => ({
   position: "relative",
   wordWrap: "break-word",
   overflowWrap: "break-word",
@@ -34,11 +35,25 @@ const FormPage = () => {
       if (!id) {
         navigator("/404");
       } else {
-        const form = await sendGetForm(id, showNotification, navigator);
-        if (!form) {
-          navigator("/404");
-        } else {
-          setForm(form);
+        try {
+          const form = await sendGetForm(id);
+          if (!form) {
+            navigator("/404");
+          } else {
+            setForm(form);
+          }
+        } catch (err) {
+          if (err instanceof AxiosError) {
+            const statusMap = {
+              [StatusCodes.UNAUTHORIZED]: "You need to login",
+            };
+
+            showNotification(getErrorMessage(err, statusMap), "error");
+
+            if (err.response?.status == StatusCodes.NOT_FOUND) {
+              navigator("/404");
+            }
+          }
         }
       }
     };
@@ -77,9 +92,20 @@ const FormPage = () => {
           }
         }
 
-        if (await sendResponse(form.id, response, showNotification)) {
+        try {
+          await sendResponse(form.id, response);
           showNotification("sent answers", "success");
           navigator("/");
+        } catch (err) {
+          if (err instanceof AxiosError) {
+            const statusMap = {
+              [StatusCodes.UNAUTHORIZED]:
+                "your Token is invalid try to logout and log back in",
+              [StatusCodes.NOT_ACCEPTABLE]: err.response?.data,
+            };
+
+            showNotification(getErrorMessage(err, statusMap), "error");
+          }
         }
       }
     };
@@ -100,22 +126,7 @@ const FormPage = () => {
               <Typography variant="body1">{form.description}</Typography>
             )}
           </StyledBox>
-          {form.questions.map((question) => {
-            const AnswerComponent = answerComponentMap[question.viewType];
-            return (
-              <AnswerComponent
-                disable={false}
-                answer={answers[question.id]}
-                onChange={(value) => {
-                  const newAnswers = { ...answers };
-                  newAnswers[question.id] = value;
-                  setAnswers(newAnswers);
-                }}
-                question={question}
-                key={question.id}
-              />
-            );
-          })}
+          <Answers questions={form.questions} answers={answers} setAnswers={setAnswers}/>
           <SaveButton onClick={handleSaveResponse} />
         </StyledBox>
       )}

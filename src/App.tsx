@@ -8,11 +8,13 @@ import { useEffect } from "react";
 import { loadUserFromToken } from "./utils/token";
 import { useDispatch } from "react-redux";
 import { changeUser } from "./types/actions";
-import FormsPage from "./views/FormsPage";
 import CreateFormPage from "./views/CreateFromPage";
 import FormPage from "./views/FormPage";
 import PageNotFoundPage from "./views/PageNotFoundPage";
 import Navbar from "./components/Navbar";
+import paths from "./configs/pathsConfig";
+import FormsPage from "./views/FormsPage";
+import UserChecker from "./components/UserChecker";
 function App() {
   const dispatch = useDispatch();
 
@@ -21,18 +23,46 @@ function App() {
     if (user) {
       dispatch(changeUser(user));
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/forms" element={<FormsPage />} />
-        <Route path="/forms/create" element={<CreateFormPage />} />
-        <Route path="/forms/:id" element={<FormPage />} />
+        <Route path={paths.home} element={<HomePage />} />
+        <Route
+          path={paths.register}
+          element={
+            <UserChecker forceLogin={false}>
+              <RegisterPage />
+            </UserChecker>
+          }
+        />
+        <Route
+          path={paths.login}
+          element={
+            <UserChecker forceLogin={false}>
+              <LoginPage />
+            </UserChecker>
+          }
+        />
+        <Route
+          path={paths.forms}
+          element={
+            <UserChecker forceLogin={true}>
+              <FormsPage />
+            </UserChecker>
+          }
+        />
+        <Route
+          path={paths.createForm}
+          element={
+            <UserChecker forceLogin={true}>
+              <CreateFormPage />
+            </UserChecker>
+          }
+        />
+        <Route path={paths.forms + "/:id"} element={<FormPage />} />
 
         <Route path="*" element={<PageNotFoundPage />} />
       </Routes>

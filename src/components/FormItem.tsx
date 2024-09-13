@@ -1,12 +1,10 @@
+import React, { useMemo } from "react";
 import { Box, Typography, IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ShareIcon from "@mui/icons-material/Share";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import React from "react";
+import { MoreVert, Delete, Share, OpenInNew } from "@mui/icons-material";
 import MenuComponent from "./MenuComponent";
 import { useNavigate } from "react-router-dom";
+import paths from "../configs/pathsConfig";
 
 interface FormItemProps {
   form: { id: string; title: string };
@@ -40,19 +38,25 @@ const FormItem: React.FC<FormItemProps> = ({
   onShare,
 }) => {
   const navigator = useNavigate();
-  const menuItems = [
-    { label: "Delete", icon: <DeleteIcon />, action: onDelete },
-    {
-      label: "Open",
-      icon: <OpenInNewIcon />,
-      action: () => {
-        navigator(`/forms/${form.id}`);
+  const menuItems = useMemo(
+    () => [
+      { label: "Delete", icon: <Delete />, action: onDelete },
+      {
+        label: "Open",
+        icon: <OpenInNew />,
+        action: () => {
+          navigator(paths.form(form.id));
+        },
       },
-    },
-    { label: "Share", icon: <ShareIcon />, action: onShare },
-  ];
+      { label: "Share", icon: <Share />, action: onShare },
+    ],
+    [form.id, navigator, onShare, onDelete]
+  );
 
-  const open = Boolean(anchorEl && selectedFormId === form.id);
+  const open = useMemo(
+    () => Boolean(anchorEl && selectedFormId === form.id),
+    [anchorEl, selectedFormId, form.id]
+  );
 
   return (
     <FormItemContainer>
@@ -64,7 +68,7 @@ const FormItem: React.FC<FormItemProps> = ({
         onClick={(event) => onMenuClick(event, form.id)}
         style={{ marginTop: "auto" }}
       >
-        <MoreVertIcon />
+        <MoreVert />
       </IconButton>
 
       <MenuComponent
